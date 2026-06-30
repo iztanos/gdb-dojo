@@ -58,6 +58,8 @@ Planned topics:
 
 ## Local browser terminal
 
+The launcher scripts start Docker and open the browser automatically.
+
 Windows:
 
 ```powershell
@@ -76,11 +78,9 @@ Manual fallback:
 docker compose up --build
 ```
 
-Then open:
+If the browser does not open automatically, visit:
 
-```text
-http://localhost:7681
-```
+[http://localhost:7681](http://localhost:7681)
 
 This runs locally for development and future exercises. The terminal runs inside a Linux container with GDB, GCC, Make, Vim, and Nano installed. The repository is mounted at `/dojo`.
 
