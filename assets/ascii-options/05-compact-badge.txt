@@ -1,7 +1,0 @@
-  +----------------+
-  | >_ GDB DOJO    |
-  |                |
-  | o breakpoint   |
-  | | stack frame  |
-  | | memory view  |
-  +----------------+
