@@ -1,23 +1,15 @@
 # Story Mode: Level 0 - The Lobby
 
-The lobby is the first room in GDB Dojo. It is quiet, overlit, and watched by Seggy, a one-eyed terminal cat with a clipboard he absolutely did not authorize anyone to touch.
+The Lobby is the intro level. It teaches the basic rhythm: read, build, run, inspect, and submit.
 
-Level 0 teaches the basic exercise rhythm:
+Seggy, the one-eyed terminal cat, watches the desk. If something breaks oddly, he may call it a Seggy fault and pretend that helps.
 
-- read the instructions
-- build the program
-- run the program
-- debug when asked
-- submit answers
+| Exercise | Status | Link |
+|---|---:|---|
+| 00: The Welcome Desk Is Watching | Ready | [00-welcome-desk](00-welcome-desk) |
+| 01: Glass Box | Planned | - |
+| 02: Moving Door | Planned | - |
+| 03: Seggy Fault | Planned | - |
+| 04: Stamp Machine | Planned | - |
 
-If something goes wrong, Seggy may call it a Seggy fault. He will pretend this is a technical term.
-
-Planned Level 0 exercises:
-
-1. `00-welcome-desk` - build and run a program
-2. `01-glass-box` - open a program in GDB
-3. `02-moving-door` - set your first breakpoint
-4. `03-seggy-fault` - inspect a variable
-5. `04-stamp-machine` - step through a helper function
-
-Only the first exercise may exist right now.
+Soft locks are okay here. If an exercise gets messy, reset it with `git restore` or use the cleanup commands in the root README.
