@@ -6,4 +6,4 @@ echo "Open http://localhost:7681"
 echo "Repo mounted at /dojo"
 
 cd /dojo
-exec ttyd -d 1 -i 0.0.0.0 -p 7681 bash
+exec ttyd -W -d 1 -i 0.0.0.0 -p 7681 bash

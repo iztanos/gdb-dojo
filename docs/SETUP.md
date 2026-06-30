@@ -40,6 +40,15 @@ If the browser does not open automatically, visit:
 
 The repo is mounted at `/dojo`. The container includes GDB, GCC, G++, Make, Vim, Nano, binutils, and related tools. This avoids installing GDB directly on the host system.
 
+Try the playground:
+
+```bash
+cd playground
+make
+./hello
+gdb ./hello
+```
+
 To stop the container:
 
 ```bash
