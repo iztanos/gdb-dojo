@@ -70,6 +70,8 @@ http://localhost:7681
 
 This runs locally for development and future exercises. The terminal runs inside a Linux container with GDB, GCC, Make, Vim, and Nano installed. The repository is mounted at `/dojo`.
 
+Detailed setup instructions are in [SETUP.md](SETUP.md). Contribution notes are in [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ```text
   local practice only
   source -> build -> debug -> fix
