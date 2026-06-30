@@ -4,61 +4,19 @@
   ____ ____  ____    ____   ___      _  ___              /\_____/\
  / ___|  _ \| __ )  |  _ \ / _ \    | |/ _ \            /  o   x  \
 | |  _| | | |  _ \  | | | | | | |_  | | | | |          ( ==  ^  == )
-| |_| | |_| | |_) | | |_| | |_| | |_| | |_| |           )   ___   (
- \____|____/|____/  |____/ \___/ \___/ \___/           /___/   \___\
+| |_| | |_| | |_) | | |_| | |_| | |_| | |_| |           )_________(
+ \____|____/|____/  |____/ \___/ \___/ \___/
 
- break -> run -> inspect -> understand       
+ break -> run -> inspect -> understand
 ```
 
-GDB Dojo is an early-stage project for hands-on GDB practice focused on real software debugging.
+GDB Dojo is a hands-on GDB practice project for learning real software debugging.
 
-This repository is early. The full exercise set has not been added yet.
+It includes a local browser terminal, a guided Story Mode, and space for standalone beginner/intermediate/advanced exercises.
 
-```text
-        .-----------------------------.
-        | (gdb) bt                    |
-        | #0  check_the_state()       |
-        | #1  follow_the_value()      |
-        '---------------.-------------'
-                        |
-                   /\_____/\
-                  /  o   x  \
-                 ( ==  ^  == )      one good eye on the stack
-                  )_________(      
+## Start Here
 
-  . . . break . . . step . . . print . . . fix
-```
-
-## Scope
-
-Planned topics:
-
-```text
-  first steps                 deeper debugging
-  -----------                 ----------------
-  run                         backtrace
-  break                       core files
-  next / step                 memory lifetime
-  print                       optimized builds
-  info locals                 threads
-```
-
-- breakpoints
-- stepping
-- variable inspection
-- stack frames
-- crash debugging
-- core dumps
-- memory lifetime and buffer-boundary bugs
-- optimized-build debugging
-- binary inspection
-- threads
-
-## Local browser terminal
-
-Docker is only required for the browser terminal path. It gives the most consistent environment, but it is not the only way to use future exercises.
-
-The launcher scripts start Docker and open the browser automatically.
+For the browser terminal:
 
 Windows:
 
@@ -72,54 +30,89 @@ macOS/Linux:
 ./start-dojo.sh
 ```
 
-Manual fallback:
-
-```bash
-docker compose up --build
-```
-
-If the browser does not open automatically, visit:
+Then open, if it does not open automatically:
 
 [http://localhost:7681](http://localhost:7681)
 
-This runs locally for development and future exercises. The terminal runs inside a Linux container with GDB, GCC, Make, Vim, and Nano installed. The repository is mounted at `/dojo`.
+For detailed setup, see [docs/SETUP.md](docs/SETUP.md).
 
-The browser terminal starts in `/dojo` with a small welcome screen, a `dojo:` prompt, and a few shortcuts such as `ll`, `c`, `root`, `playground`, and `gdbq`.
+## Modes
 
-## Start Story Mode
+| Mode | Status | Best for | Link |
+|---|---|---|---|
+| Story Mode | Started | First-time GDB users who want a guided path | [levels/story](levels/story) |
+| Beginner | Planned | Official and community exercises focused on one GDB skill at a time | [levels/beginner](levels/beginner) |
+| Intermediate | Planned | Official and community exercises with more realistic debugging tasks | [levels/intermediate](levels/intermediate) |
+| Advanced | Planned | Official and community exercises with harder debugging scenarios | [levels/advanced](levels/advanced) |
 
-The first Story Mode exercise is in:
+## Story Mode
 
-```text
-levels/story/00-lobby/00-welcome-desk
-```
+Story Mode is the guided path. Start here if you are new to GDB.
 
-Try it:
+| Level | Status | Teaches | Link |
+|---|---|---|---|
+| Level 0: The Lobby | Started | build, run, first inspection, basic GDB flow | [levels/story/00-lobby](levels/story/00-lobby) |
+
+Current first exercise:
 
 ```bash
 cd levels/story/00-lobby/00-welcome-desk
 make
 ./welcome
+./check.sh BADGE_WORD
 ```
 
-## Local/manual path
+## Local Browser Terminal
 
-If you already have GDB, GCC, and Make installed, you can use the playground directly without Docker:
+The browser terminal runs locally in Docker. The repo is mounted at `/dojo`.
+
+Useful commands inside the terminal:
 
 ```bash
-cd playground
+cd /dojo
+cd levels/story/00-lobby/00-welcome-desk
 make
-./hello
-gdb ./hello
+./welcome
 ```
 
-Future exercises can also be downloaded or run directly with a local GDB/GCC setup.
+Docker is only required for the browser terminal path. Future exercises can also be downloaded or run directly with a local GDB/GCC setup.
 
-Detailed setup instructions are in [docs/SETUP.md](docs/SETUP.md). Contribution notes are in [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
+## Resetting
 
-```text
-  local practice only
-  source -> build -> debug -> fix
+If you only want to clean build files:
+
+```bash
+make clean-story-0
 ```
+
+If you changed one exercise too much:
+
+```bash
+git restore levels/story/00-lobby/00-welcome-desk
+```
+
+If you want to reset Story Mode progress:
+
+```bash
+make reset-progress
+```
+
+PowerShell:
+
+```powershell
+Remove-Item -Recurse -Force .dojo
+```
+
+If you want to reset all tracked files:
+
+```bash
+git restore .
+```
+
+Use this carefully. It discards local changes to tracked files.
+
+## Contributing
+
+People can contribute their own debugging exercises, improve existing ones, or suggest new Story Mode ideas. See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md) for the exercise format and pull request guidelines.
 
 All future practice content will be designed for local debugging scenarios.
