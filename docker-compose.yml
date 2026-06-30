@@ -1,0 +1,15 @@
+services:
+  dojo:
+    build: .
+    container_name: gdb-dojo
+    ports:
+      - "7681:7681"
+    volumes:
+      - .:/dojo
+    working_dir: /dojo
+    stdin_open: true
+    tty: true
+    ulimits:
+      core:
+        soft: -1
+        hard: -1

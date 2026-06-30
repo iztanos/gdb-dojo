@@ -53,7 +53,19 @@ Planned topics:
 - binary inspection
 - threads
 
-Docker/browser-terminal setup is planned for later and is not present yet.
+## Local browser terminal
+
+```bash
+docker compose up --build
+```
+
+Then open:
+
+```text
+http://localhost:7681
+```
+
+This runs locally for development and future exercises. The terminal runs inside a Linux container with GDB, GCC, Make, Vim, and Nano installed. The repository is mounted at `/dojo`.
 
 ```text
   local practice only
