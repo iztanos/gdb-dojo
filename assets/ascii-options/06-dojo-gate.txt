@@ -1,0 +1,10 @@
+        |||||||||||||||
+        || GDB DOJO ||
+        |||||||||||||||
+             || ||
+             || ||
+     first run  ->  real debugging
+             || ||
+             || ||
+        [break] [step] [bt]
+        [print] [core] [thread]

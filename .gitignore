@@ -1,0 +1,28 @@
+# Build outputs
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dll
+*.dylib
+
+# Debug and crash artifacts
+core
+core.*
+*.core
+*.dSYM/
+
+# CMake and Make build directories
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+compile_commands.json
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,12 @@
+        GDB DOJO
+  ===================
+
+      o  breakpoint
+      |
+      +-- frame #0  calculate_total()
+      |
+      +-- frame #1  process_order()
+      |
+      +-- frame #2  main()
+
+  inspect state. trace values. fix behavior.

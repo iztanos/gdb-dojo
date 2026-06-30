@@ -1,0 +1,20 @@
+  GDB DOJO :: CRASH TRACE
+
+  program received signal
+       |
+       v
+  +------------+
+  | frame #0   |  failing line
+  +------------+
+        |
+        v
+  +------------+
+  | frame #1   |  bad argument
+  +------------+
+        |
+        v
+  +------------+
+  | frame #2   |  caller state
+  +------------+
+
+  backtrace first. guess later.
