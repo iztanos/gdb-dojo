@@ -3,6 +3,7 @@
 *.obj
 *.exe
 *.out
+playground/hello
 *.a
 *.so
 *.dll

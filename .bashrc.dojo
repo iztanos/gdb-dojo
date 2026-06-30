@@ -1,0 +1,28 @@
+if [ -z "$PS1" ]; then
+    return
+fi
+
+cd /dojo 2>/dev/null || true
+
+cat <<'EOF'
++--------------------------------------------------+
+| GDB Dojo                                         |
+| Local debugging terminal                         |
++--------------------------------------------------+
+
+Repo:       /dojo
+Playground: cd playground
+Build:      make
+Debug:      gdb ./hello
+Help:       cat docs/SETUP.md
+
+Type `clear` to clean the screen.
+EOF
+
+PS1='dojo:\w$ '
+
+alias ll='ls -la'
+alias c='clear'
+alias root='cd /dojo'
+alias playground='cd /dojo/playground 2>/dev/null || echo "playground directory not found"'
+alias gdbq='gdb -q'

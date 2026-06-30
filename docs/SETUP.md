@@ -6,7 +6,7 @@ GDB Dojo is early. The local browser terminal exists, but exercises have not bee
 
 ## Option 1: Local Browser Terminal With Docker
 
-This is the easiest setup once Docker is installed. The launcher scripts start Docker Compose and open the browser automatically.
+Docker is only required for the browser terminal path. This is the easiest and most consistent setup once Docker is installed. The launcher scripts start Docker Compose and open the browser automatically.
 
 ```bash
 git clone https://github.com/iztanos/gdb-dojo.git
@@ -40,6 +40,8 @@ If the browser does not open automatically, visit:
 
 The repo is mounted at `/dojo`. The container includes GDB, GCC, G++, Make, Vim, Nano, binutils, and related tools. This avoids installing GDB directly on the host system.
 
+The browser terminal starts in `/dojo` with a small welcome screen and a `dojo:` prompt.
+
 Try the playground:
 
 ```bash
@@ -55,9 +57,28 @@ To stop the container:
 docker compose down
 ```
 
+## Terminal Shortcuts
+
+```text
+ll          list files
+c           clear screen
+root        return to /dojo
+playground  enter playground directory
+gdbq        start gdb quietly
+```
+
 ## Option 2: Debug Files On Your Own System
 
-When exercises are added, they should be simple enough that users can download or copy the program files and debug locally without the browser terminal. This is useful for people who already have GDB and a compiler installed.
+When exercises are added, they should be simple enough that users can download or copy the program files and debug locally without the browser terminal. This is useful for people who already have GDB, GCC, and Make installed, or for machines where Docker is unavailable.
+
+The current playground can be run this way:
+
+```bash
+cd playground
+make
+./hello
+gdb ./hello
+```
 
 Typical commands may look like:
 
