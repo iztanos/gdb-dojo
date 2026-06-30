@@ -7,7 +7,7 @@
 | |_| | |_| | |_) | | |_| | |_| | |_| | |_| |           )   ___   (
  \____|____/|____/  |____/ \___/ \___/ \___/           /___/   \___\
 
-        break -> run -> inspect -> understand       
+ break -> run -> inspect -> understand       
 ```
 
 GDB Dojo is an early-stage project for hands-on GDB practice focused on real software debugging.
@@ -26,7 +26,7 @@ This repository is early. Exercises and tooling have not been added yet.
                  ( ==  ^  == )      one good eye on the stack
                   )_________(      
 
-             . . . break . . . step . . . print . . . fix
+  . . . break . . . step . . . print . . . fix
 ```
 
 ## Scope
