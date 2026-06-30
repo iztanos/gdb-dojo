@@ -58,6 +58,20 @@ Planned topics:
 
 ## Local browser terminal
 
+Windows:
+
+```powershell
+.\start-dojo.bat
+```
+
+macOS/Linux:
+
+```bash
+./start-dojo.sh
+```
+
+Manual fallback:
+
 ```bash
 docker compose up --build
 ```

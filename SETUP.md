@@ -11,6 +11,26 @@ This is the easiest setup once Docker is installed.
 ```bash
 git clone https://github.com/iztanos/gdb-dojo.git
 cd gdb-dojo
+```
+
+On Windows, run:
+
+```powershell
+.\start-dojo.bat
+```
+
+You can also double-click `start-dojo.bat`.
+
+On macOS/Linux, run:
+
+```bash
+chmod +x start-dojo.sh
+./start-dojo.sh
+```
+
+Manual fallback:
+
+```bash
 docker compose up --build
 ```
 
