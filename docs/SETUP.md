@@ -2,7 +2,7 @@
 
 ## Current Status
 
-GDB Dojo is early. The local browser terminal exists, but exercises have not been added yet.
+GDB Dojo is early. The local browser terminal exists, and the first Story Mode exercise is available.
 
 ## Option 1: Local Browser Terminal With Docker
 
@@ -49,6 +49,14 @@ cd playground
 make
 ./hello
 gdb ./hello
+```
+
+You can also try the first Story Mode exercise after setup:
+
+```bash
+cd levels/story/00-lobby/00-welcome-desk
+make
+./welcome
 ```
 
 To stop the container:

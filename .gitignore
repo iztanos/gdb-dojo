@@ -4,6 +4,7 @@
 *.exe
 *.out
 playground/hello
+levels/**/welcome
 *.a
 *.so
 *.dll

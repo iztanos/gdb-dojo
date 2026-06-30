@@ -12,7 +12,7 @@
 
 GDB Dojo is an early-stage project for hands-on GDB practice focused on real software debugging.
 
-This repository is early. Exercises and tooling have not been added yet.
+This repository is early. The full exercise set has not been added yet.
 
 ```text
         .-----------------------------.
@@ -85,6 +85,22 @@ If the browser does not open automatically, visit:
 This runs locally for development and future exercises. The terminal runs inside a Linux container with GDB, GCC, Make, Vim, and Nano installed. The repository is mounted at `/dojo`.
 
 The browser terminal starts in `/dojo` with a small welcome screen, a `dojo:` prompt, and a few shortcuts such as `ll`, `c`, `root`, `playground`, and `gdbq`.
+
+## Start Story Mode
+
+The first Story Mode exercise is in:
+
+```text
+levels/story/00-lobby/00-welcome-desk
+```
+
+Try it:
+
+```bash
+cd levels/story/00-lobby/00-welcome-desk
+make
+./welcome
+```
 
 ## Local/manual path
 
