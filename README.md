@@ -1,13 +1,13 @@
 # GDB Dojo
 
 ```text
-  ____ ____  ____    ____   ___      _  ___
- / ___|  _ \| __ )  |  _ \ / _ \    | |/ _ \
-| |  _| | | |  _ \  | | | | | | |_  | | | | |
-| |_| | |_| | |_) | | |_| | |_| | |_| | |_| |
- \____|____/|____/  |____/ \___/ \___/ \___/
-
-        break -> run -> inspect -> understand
+  ____ ____  ____    ____   ___      _  ___              /\_____/\
+ / ___|  _ \| __ )  |  _ \ / _ \    | |/ _ \            /  o   x  \
+| |  _| | | |  _ \  | | | | | | |_  | | | | |          ( ==  ^  == )
+| |_| | |_| | |_) | | |_| | |_| | |_| | |_| |           )   ___   (
+ \____|____/|____/  |____/ \___/ \___/ \___/           /___/   \___\
+                                                        _/  /_\  \_
+        break -> run -> inspect -> understand        .- paw on frame #0 -.
 ```
 
 GDB Dojo is an early-stage project for hands-on GDB practice focused on real software debugging.
@@ -15,17 +15,20 @@ GDB Dojo is an early-stage project for hands-on GDB practice focused on real sof
 This repository is early. Exercises and tooling have not been added yet.
 
 ```text
-        .----------------.
-        |  (gdb) run     |
-        |  breakpoint 1  |
-        |  frame #0      |
-        '-------.--------'
-                |
-          [ debugger bot ]
-              /|   |\
-             /_|___|_\
-               /   \
-              /_____\
+        .-----------------------------.
+        | (gdb) bt                    |
+        | #0  check_the_state()       |
+        | #1  follow_the_value()      |
+        '---------------.-------------'
+                        |
+                   /\_____/\
+                  /  o   x  \
+                 ( ==  ^  == )      one good eye on the stack
+                  )   ___   (       four paws on the ground
+                 /___/   \___\
+                  _/  /_\  \_
+
+             . . . break . . . step . . . print . . . fix
 ```
 
 ## Scope
