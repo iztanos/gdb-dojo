@@ -26,7 +26,7 @@ RUN useradd -m -s /bin/bash dojo
 
 WORKDIR /dojo
 
-COPY dojo-entrypoint.sh /usr/local/bin/dojo-entrypoint.sh
+COPY docker/dojo-entrypoint.sh /usr/local/bin/dojo-entrypoint.sh
 RUN chmod +x /usr/local/bin/dojo-entrypoint.sh
 
 USER dojo

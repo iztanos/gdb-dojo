@@ -82,7 +82,7 @@ If the browser does not open automatically, visit:
 
 This runs locally for development and future exercises. The terminal runs inside a Linux container with GDB, GCC, Make, Vim, and Nano installed. The repository is mounted at `/dojo`.
 
-Detailed setup instructions are in [SETUP.md](SETUP.md). Contribution notes are in [CONTRIBUTING.md](CONTRIBUTING.md).
+Detailed setup instructions are in [docs/SETUP.md](docs/SETUP.md). Contribution notes are in [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 ```text
   local practice only

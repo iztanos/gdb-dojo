@@ -1,6 +1,8 @@
 services:
   dojo:
-    build: .
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
     container_name: gdb-dojo
     ports:
       - "7681:7681"
