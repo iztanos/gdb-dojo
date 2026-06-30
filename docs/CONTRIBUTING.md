@@ -2,22 +2,32 @@
 
 ## Current Status
 
-GDB Dojo is early. Setup docs and the local browser terminal exist. Exercises are not added yet.
+GDB Dojo is early. Setup docs, the local browser terminal, and the first Story Mode exercise exist.
 
 ## Good First Contributions
 
 - Improve setup instructions.
 - Test Docker setup on Linux, macOS, or Windows.
 - Report unclear README or setup wording.
-- Suggest small beginner debugging exercises.
+- Suggest or add small standalone debugging exercises.
 - Fix typos or broken commands.
 
 ## Future Exercise Contributions
 
-Future exercise structure will likely look like:
+Standalone exercises should go under the right mode folder:
+
+| Contribution type | Where it goes | Notes |
+|---|---|---|
+| Beginner exercise | `levels/beginner/` | One focused GDB concept |
+| Intermediate exercise | `levels/intermediate/` | More realistic debugging task |
+| Advanced exercise | `levels/advanced/` | Harder scenario, added later |
+| Story idea | `levels/story/` | Discuss first to keep the guided path consistent |
+| Docs/setup fix | README or docs | Keep changes short and practical |
+
+Future standalone exercise structure will likely look like:
 
 ```text
-levels/00-example/
+levels/beginner/00-example/
   README.md
   main.c
   Makefile
@@ -25,6 +35,8 @@ levels/00-example/
 ```
 
 This structure may change because the project is early.
+
+Story Mode contributions should be discussed or opened as an issue first because Story Mode needs a consistent sequence and tone.
 
 Exercise contribution guidelines:
 
