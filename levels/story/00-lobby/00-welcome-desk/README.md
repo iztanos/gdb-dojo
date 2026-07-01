@@ -8,15 +8,26 @@ If it compiles, that only proves it compiles.
 
 No GDB is required yet.
 
-## Build
+## Start This Exercise
+
+| Option | Use when | Start |
+|---|---|---|
+| Browser terminal | You want the built-in environment | Run `./start-dojo.sh` or `.\start-dojo.bat`, then open [localhost:7681](http://localhost:7681) |
+| Manual | You already have GCC and Make | Run the manual commands below |
+
+## Browser Terminal
 
 ```bash
+cd /dojo/levels/story/00-lobby/00-welcome-desk
 make
+./welcome
 ```
 
-## Run
+## Manual
 
 ```bash
+cd levels/story/00-lobby/00-welcome-desk
+make
 ./welcome
 ```
 
