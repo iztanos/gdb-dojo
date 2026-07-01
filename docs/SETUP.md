@@ -156,6 +156,26 @@ gcc --version
 make --version
 ```
 
+## Resetting
+
+Reset Story Mode progress:
+
+```bash
+rm -rf .dojo
+```
+
+PowerShell:
+
+```powershell
+Remove-Item -Recurse -Force .dojo
+```
+
+Restore a changed exercise:
+
+```bash
+git restore levels/story/00-lobby/00-welcome-desk
+```
+
 ## Troubleshooting
 
 Port `7681` already in use: stop the other process or change the Compose port mapping.

@@ -8,6 +8,8 @@ If it compiles, that only proves it compiles.
 
 No GDB is required yet.
 
+You should already be in this exercise directory.
+
 ## Build
 
 ```bash
