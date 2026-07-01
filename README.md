@@ -55,11 +55,6 @@ Story Mode is the guided path. Start here if you are new to GDB.
 
 Current first exercise:
 
-| Option | Use when | Start |
-|---|---|---|
-| Browser terminal | You want the built-in environment | Run `./start-dojo.sh` or `.\start-dojo.bat`, then open [localhost:7681](http://localhost:7681) |
-| Manual | You already have GCC and Make | `cd levels/story/00-lobby/00-welcome-desk && make && ./welcome` |
-
 ```bash
 cd levels/story/00-lobby/00-welcome-desk
 make
