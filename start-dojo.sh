@@ -17,10 +17,7 @@ open_browser() {
 
 print_panel() {
     cat <<EOF
-+--------------------------------------------------+
-| GDB Dojo                                         |
-| Local browser terminal                           |
-+--------------------------------------------------+
+GDB Dojo local browser terminal
 
 Repo:        $(pwd)
 Mounted at:  /dojo
@@ -28,7 +25,8 @@ Terminal:    $URL
 Container:   gdb-dojo
 Tools:       gdb, gcc, g++, make, vim, nano
 
-Press Ctrl+C to stop, then run docker compose down if needed.
+Opening $URL
+Press Ctrl+C to stop.
 
 EOF
 }

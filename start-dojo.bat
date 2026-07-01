@@ -50,10 +50,7 @@ pause
 exit /b 1
 
 :panel
-echo +--------------------------------------------------+
-echo ^| GDB Dojo                                         ^|
-echo ^| Local browser terminal                           ^|
-echo +--------------------------------------------------+
+echo GDB Dojo local browser terminal
 echo.
 echo Repo:        %CD%
 echo Mounted at:  /dojo
@@ -61,6 +58,7 @@ echo Terminal:    %URL%
 echo Container:   gdb-dojo
 echo Tools:       gdb, gcc, g++, make, vim, nano
 echo.
-echo Press Ctrl+C to stop, then run docker compose down if needed.
+echo Opening %URL%
+echo Press Ctrl+C to stop.
 echo.
 exit /b 0

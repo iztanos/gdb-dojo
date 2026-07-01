@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+set -e
+
+repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$repo_dir"
+
+. "$repo_dir/lib/dojo-ui.sh"
+
+print_help() {
+    dojo_clear
+    dojo_header "GDB DOJO" "Practical GDB training"
+    echo
+    dojo_seggy 'Seggy says: "Trust, but print."'
+    echo
+    printf "%bStart:%b\n" "$BOLD$CYAN" "$RESET"
+    dojo_cmd "./dojo lobby"
+    echo
+    echo "Modes:"
+    printf "  %-13s %-11s %s\n" "story" "started" "guided path for first-time GDB users"
+    printf "  %-13s %-11s %s\n" "beginner" "planned" "focused standalone drills"
+    printf "  %-13s %-11s %s\n" "intermediate" "planned" "realistic debugging tasks"
+    printf "  %-13s %-11s %s\n" "advanced" "planned" "harder debugging scenarios"
+    echo
+    echo "Commands:"
+    echo "  ./dojo modes             show available modes"
+    echo "  ./dojo story             show Story Mode levels"
+    echo "  ./dojo lobby             show Level 0 exercises"
+    echo "  ./dojo reset-progress    reset local Story Mode progress"
+    echo "  ./dojo help              show this help"
+}
+
+show_modes() {
+    dojo_clear
+    printf "%bModes%b\n\n" "$BOLD$CYAN" "$RESET"
+    printf "%-16s  %-9s  %s\n" "Mode" "Status" "Best for"
+    printf "%-16s  %-9s  %s\n" "--------------" "---------" "----------------------------------"
+    printf "%-16s  %-9s  %s\n" "Story Mode" "started" "first-time GDB users"
+    printf "%-16s  %-9s  %s\n" "Beginner" "planned" "standalone skill drills"
+    printf "%-16s  %-9s  %s\n" "Intermediate" "planned" "realistic debugging tasks"
+    printf "%-16s  %-9s  %s\n" "Advanced" "planned" "harder scenarios"
+}
+
+show_story() {
+    dojo_clear
+    printf "%bStory Mode%b\n\n" "$BOLD$CYAN" "$RESET"
+    printf "%-15s  %-9s  %s\n" "Level" "Status" "Path"
+    printf "%-15s  %-9s  %s\n" "--------------" "---------" "---------------------------"
+    printf "%-15s  %-9s  %s\n" "00-lobby" "started" "levels/story/00-lobby"
+}
+
+show_lobby() {
+    dojo_clear
+    dojo_header "STORY MODE / LEVEL 0" "The Lobby"
+    echo
+    printf "%bSeggy has opened the lobby door.%b\n" "$YELLOW" "$RESET"
+    echo
+    echo "Exercises:"
+    printf "%b  [available]%b  00-welcome-desk\n" "$GREEN" "$RESET"
+    echo "               Build and run your first dojo program."
+    echo
+    printf "%b  [planned]%b    01-glass-box\n" "$DIM" "$RESET"
+    echo "               Open a program in GDB."
+    echo
+    printf "%bEnter:%b\n" "$GREEN" "$RESET"
+    dojo_cmd "cd levels/story/00-lobby/00-welcome-desk"
+    dojo_cmd "start"
+}
+
+reset_progress() {
+    dojo_clear
+    if [ -d .dojo ]; then
+        rm -rf .dojo
+        dojo_success "Removed .dojo progress state."
+    else
+        printf "%bNo .dojo progress state found.%b\n" "$DIM" "$RESET"
+    fi
+}
+
+case "${1:-help}" in
+    help|-h|--help)
+        print_help
+        ;;
+    modes)
+        show_modes
+        ;;
+    story)
+        show_story
+        ;;
+    lobby)
+        show_lobby
+        ;;
+    reset-progress)
+        reset_progress
+        ;;
+    *)
+        dojo_error "Unknown command: $1"
+        echo
+        print_help
+        exit 1
+        ;;
+esac

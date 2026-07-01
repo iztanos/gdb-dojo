@@ -1,17 +1,39 @@
 #!/usr/bin/env bash
 set -e
 
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_dir="$(cd "$script_dir/../../../.." && pwd)"
+. "$repo_dir/lib/dojo-ui.sh"
+
+dojo_clear
+
 if [ $# -lt 1 ]; then
-    echo "Usage: ./check.sh BADGE_WORD"
+    dojo_error "Usage:"
+    echo "  ./check.sh BADGE_WORD"
     exit 1
 fi
 
 answer=$(printf '%s' "$1" | tr -d '[:space:]' | tr '[:lower:]' '[:upper:]')
 
 if [ "$answer" = "WHISKER" ]; then
-    echo "Correct. Seggy stamps your temporary badge."
+    dojo_header "CORRECT"
+    echo
+    dojo_success "Seggy stamps your temporary badge."
+    echo
+    echo "Progress:"
+    echo "  completed  story/00-lobby/00-welcome-desk"
+    echo "  unlocked   story/00-lobby/01-glass-box"
+    echo
+    echo "Next:"
+    echo "  story/00-lobby/01-glass-box is planned."
     exit 0
 fi
 
-echo "Incorrect. Seggy squints at the badge printer."
+dojo_header "NOT QUITE"
+echo
+dojo_error "Seggy tilts his head."
+echo
+echo "Try again:"
+dojo_cmd "./welcome"
+dojo_cmd "./check.sh BADGE_WORD"
 exit 1

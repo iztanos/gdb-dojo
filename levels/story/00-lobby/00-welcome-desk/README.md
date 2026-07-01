@@ -10,6 +10,22 @@ No GDB is required yet.
 
 You should already be in this exercise directory.
 
+## Start
+
+Browser terminal:
+
+```bash
+start
+```
+
+Manual:
+
+```bash
+./start
+```
+
+`start` only shows the briefing. It does not build, run, submit, or reveal the answer.
+
 ## Build
 
 ```bash

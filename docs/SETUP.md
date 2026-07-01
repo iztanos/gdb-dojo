@@ -42,6 +42,15 @@ The repo is mounted at `/dojo`. The container includes GDB, GCC, G++, Make, Vim,
 
 The browser terminal starts in `/dojo` with a small welcome screen and a `dojo:` prompt.
 
+Use the helper to see modes and levels:
+
+```bash
+dojo
+dojo lobby
+```
+
+The CLI uses color when supported. Set `NO_COLOR=1` to disable color output.
+
 Try the playground:
 
 ```bash
@@ -55,8 +64,7 @@ You can also try the first Story Mode exercise after setup:
 
 ```bash
 cd levels/story/00-lobby/00-welcome-desk
-make
-./welcome
+start
 ```
 
 To stop the container:
@@ -73,11 +81,12 @@ c           clear screen
 root        return to /dojo
 playground  enter playground directory
 gdbq        start gdb quietly
+start       run ./start in the current exercise directory
 ```
 
 ## Option 2: Debug Files On Your Own System
 
-When exercises are added, they should be simple enough that users can download or copy the program files and debug locally without the browser terminal. This is useful for people who already have GDB, GCC, and Make installed, or for machines where Docker is unavailable.
+Exercises should be simple enough that users can download or copy the program files and debug locally without the browser terminal. This is useful for people who already have GDB, GCC, and Make installed, or for machines where Docker is unavailable.
 
 The current playground can be run this way:
 

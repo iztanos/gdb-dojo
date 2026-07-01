@@ -4,25 +4,36 @@ fi
 
 cd /dojo 2>/dev/null || true
 
+printf '\033[2J\033[H'
+
 cat <<'EOF'
-+--------------------------------------------------+
-| GDB Dojo                                         |
-| Local debugging terminal                         |
-+--------------------------------------------------+
+GDB Dojo local terminal
 
-Repo:       /dojo
-Playground: cd playground
-Build:      make
-Debug:      gdb ./hello
-Help:       cat docs/SETUP.md
+Start here:
+  dojo
+  dojo lobby
 
-Type `clear` to clean the screen.
+Inside an exercise:
+  start
 EOF
 
 PS1='dojo:\w$ '
 
 alias ll='ls -la'
-alias c='clear'
+alias c='printf "\033[2J\033[H"'
 alias root='cd /dojo'
 alias playground='cd /dojo/playground 2>/dev/null || echo "playground directory not found"'
 alias gdbq='gdb -q'
+
+dojo() {
+    bash /dojo/dojo "$@"
+}
+
+start() {
+    if [ -f ./start ]; then
+        bash ./start "$@"
+    else
+        echo "No start script in this directory."
+        echo "Move into an exercise directory, then run start."
+    fi
+}

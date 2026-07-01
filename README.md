@@ -32,6 +32,15 @@ Then follow the terminal welcome message.
 
 For full setup instructions, see [docs/SETUP.md](docs/SETUP.md).
 
+Inside the browser terminal:
+
+```bash
+dojo
+dojo lobby
+```
+
+The CLI uses color when supported. Set `NO_COLOR=1` to disable color output.
+
 ## Modes
 
 | Mode | Best for | Status | Link |
@@ -45,7 +54,13 @@ For full setup instructions, see [docs/SETUP.md](docs/SETUP.md).
 
 `levels/story/00-lobby/00-welcome-desk`
 
-See the exercise README for instructions.
+Inside the exercise directory, run:
+
+```bash
+start
+```
+
+See the exercise README for manual commands.
 
 ## Resetting
 
