@@ -45,18 +45,18 @@ if docker compose version >/dev/null 2>&1; then
     print_panel
     echo "Building image quietly..."
     docker compose build --quiet
-    echo "Opening browser..."
-    (sleep 2; open_browser) &
     echo "Starting terminal..."
+    echo "Opening browser after the terminal starts..."
+    (sleep 4; open_browser) &
     echo
     docker compose up
 elif command -v docker-compose >/dev/null 2>&1; then
     print_panel
     echo "Building image..."
     docker-compose build
-    echo "Opening browser..."
-    (sleep 2; open_browser) &
     echo "Starting terminal..."
+    echo "Opening browser after the terminal starts..."
+    (sleep 4; open_browser) &
     echo
     docker-compose up
 else

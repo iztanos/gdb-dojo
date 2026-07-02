@@ -1,4 +1,12 @@
 #include <stdio.h>
+#include <unistd.h>
+
+static void clear_screen(void)
+{
+    if (isatty(STDOUT_FILENO)) {
+        printf("\033[2J\033[H");
+    }
+}
 
 static const char *door_word(void)
 {
@@ -10,6 +18,7 @@ static void print_header(void)
     puts("+------------------------------------------------------------+");
     puts("| THE MOVING DOOR                                            |");
     puts("+------------------------------------------------------------+");
+    puts("");
 }
 
 static void print_scene(void)
@@ -26,6 +35,7 @@ int main(void)
 {
     const char *word = door_word();
 
+    clear_screen();
     print_header();
     print_scene();
     puts("Door word:");

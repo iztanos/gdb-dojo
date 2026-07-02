@@ -16,17 +16,9 @@ fi
 answer=$(printf '%s' "$1" | tr -d '[:space:]' | tr '[:lower:]' '[:upper:]')
 
 if [ "$answer" = "HINGE" ]; then
-    mkdir -p "$repo_dir/.dojo/completed" "$repo_dir/.dojo/unlocked"
-    touch "$repo_dir/.dojo/completed/story-00-lobby-02-moving-door"
-    touch "$repo_dir/.dojo/unlocked/story-00-lobby-03-seggy-fault"
-
     dojo_header "CORRECT"
     echo
     dojo_success "Door word accepted."
-    echo
-    echo "Progress:"
-    echo "  completed  story/00-lobby/02-moving-door"
-    echo "  unlocked   story/00-lobby/03-seggy-fault"
     echo
     echo "Next:"
     echo "  story/00-lobby/03-seggy-fault is planned."

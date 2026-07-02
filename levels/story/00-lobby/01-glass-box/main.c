@@ -1,4 +1,12 @@
 #include <stdio.h>
+#include <unistd.h>
+
+static void clear_screen(void)
+{
+    if (isatty(STDOUT_FILENO)) {
+        printf("\033[2J\033[H");
+    }
+}
 
 static const char *observation_phrase(void)
 {
@@ -32,6 +40,7 @@ int main(void)
 {
     const char *phrase = observation_phrase();
 
+    clear_screen();
     print_header();
     print_scene();
     print_observation(phrase);

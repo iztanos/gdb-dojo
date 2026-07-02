@@ -169,18 +169,6 @@ make --version
 
 ## Resetting
 
-Reset Story Mode progress:
-
-```bash
-rm -rf .dojo
-```
-
-PowerShell:
-
-```powershell
-Remove-Item -Recurse -Force .dojo
-```
-
 Restore a changed exercise:
 
 ```bash

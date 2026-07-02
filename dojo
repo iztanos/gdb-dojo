@@ -25,7 +25,6 @@ print_help() {
     echo "  ./dojo modes             show available modes"
     echo "  ./dojo story             show Story Mode levels"
     echo "  ./dojo lobby             show Level 0 exercises"
-    echo "  ./dojo reset-progress    reset local Story Mode progress"
     echo "  ./dojo help              show this help"
 }
 
@@ -53,31 +52,21 @@ show_lobby() {
     dojo_header "STORY MODE / LEVEL 0" "The Lobby"
     echo
     echo "Exercises:"
-    printf "%b  [available]%b  00-welcome-desk\n" "$GREEN" "$RESET"
-    echo "               Build and run your first dojo program."
+    printf "%b  00-welcome-desk%b\n" "$GREEN" "$RESET"
+    echo "    Build and run your first dojo program."
     echo
-    printf "%b  [available]%b  01-glass-box\n" "$GREEN" "$RESET"
-    echo "               Run a program inside GDB."
+    printf "%b  01-glass-box%b\n" "$GREEN" "$RESET"
+    echo "    Run a program inside GDB."
     echo
-    printf "%b  [available]%b  02-moving-door\n" "$GREEN" "$RESET"
-    echo "               Set your first breakpoint."
+    printf "%b  02-moving-door%b\n" "$GREEN" "$RESET"
+    echo "    Set your first breakpoint."
     echo
-    printf "%b  [planned]%b    03-seggy-fault\n" "$DIM" "$RESET"
-    echo "               Inspect a local variable."
+    printf "%b  03-seggy-fault%b\n" "$DIM" "$RESET"
+    echo "    Planned: inspect a local variable."
     echo
     printf "%bEnter:%b\n" "$GREEN" "$RESET"
     dojo_cmd "cd levels/story/00-lobby/00-welcome-desk"
     dojo_cmd "start"
-}
-
-reset_progress() {
-    dojo_clear
-    if [ -d .dojo ]; then
-        rm -rf .dojo
-        dojo_success "Removed .dojo progress state."
-    else
-        printf "%bNo .dojo progress state found.%b\n" "$DIM" "$RESET"
-    fi
 }
 
 case "${1:-help}" in
@@ -92,9 +81,6 @@ case "${1:-help}" in
         ;;
     lobby)
         show_lobby
-        ;;
-    reset-progress)
-        reset_progress
         ;;
     *)
         dojo_error "Unknown command: $1"

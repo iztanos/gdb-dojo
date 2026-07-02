@@ -16,17 +16,9 @@ fi
 answer=$(printf '%s' "$1" | tr -d '[:space:]' | tr '[:lower:]' '[:upper:]')
 
 if [ "$answer" = "BLINK" ]; then
-    mkdir -p "$repo_dir/.dojo/completed" "$repo_dir/.dojo/unlocked"
-    touch "$repo_dir/.dojo/completed/story-00-lobby-01-glass-box"
-    touch "$repo_dir/.dojo/unlocked/story-00-lobby-02-moving-door"
-
     dojo_header "CORRECT"
     echo
     dojo_success "Observation accepted."
-    echo
-    echo "Progress:"
-    echo "  completed  story/00-lobby/01-glass-box"
-    echo "  unlocked   story/00-lobby/02-moving-door"
     echo
     echo "Next:"
     dojo_cmd "./dojo lobby"
