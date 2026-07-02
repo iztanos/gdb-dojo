@@ -13,8 +13,7 @@ dojo_header "00: THE WELCOME DESK IS WATCHING"
 echo
 
 cat <<'EOF'
-Seggy is sitting on the welcome desk.
-The badge printer is awake. That is not a good sign.
+"If it compiles, congratulations. You have a suspect."
 
 Mission:
   Build the program.

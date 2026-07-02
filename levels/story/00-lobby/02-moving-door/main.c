@@ -1,0 +1,35 @@
+#include <stdio.h>
+
+static const char *door_word(void)
+{
+    return "HINGE";
+}
+
+static void print_header(void)
+{
+    puts("+------------------------------------------------------------+");
+    puts("| THE MOVING DOOR                                            |");
+    puts("+------------------------------------------------------------+");
+}
+
+static void print_scene(void)
+{
+    puts("The lobby door slides open.");
+    puts("Then closed.");
+    puts("Then open again.");
+    puts("");
+    puts("\"Breakpoints are how we teach time to behave.\"");
+    puts("");
+}
+
+int main(void)
+{
+    const char *word = door_word();
+
+    print_header();
+    print_scene();
+    puts("Door word:");
+    printf("  %s\n", word);
+
+    return 0;
+}

@@ -52,14 +52,18 @@ show_lobby() {
     dojo_clear
     dojo_header "STORY MODE / LEVEL 0" "The Lobby"
     echo
-    printf "%bSeggy has opened the lobby door.%b\n" "$YELLOW" "$RESET"
-    echo
     echo "Exercises:"
     printf "%b  [available]%b  00-welcome-desk\n" "$GREEN" "$RESET"
     echo "               Build and run your first dojo program."
     echo
-    printf "%b  [planned]%b    01-glass-box\n" "$DIM" "$RESET"
-    echo "               Open a program in GDB."
+    printf "%b  [available]%b  01-glass-box\n" "$GREEN" "$RESET"
+    echo "               Run a program inside GDB."
+    echo
+    printf "%b  [available]%b  02-moving-door\n" "$GREEN" "$RESET"
+    echo "               Set your first breakpoint."
+    echo
+    printf "%b  [planned]%b    03-seggy-fault\n" "$DIM" "$RESET"
+    echo "               Inspect a local variable."
     echo
     printf "%bEnter:%b\n" "$GREEN" "$RESET"
     dojo_cmd "cd levels/story/00-lobby/00-welcome-desk"

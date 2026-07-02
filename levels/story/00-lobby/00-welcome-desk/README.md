@@ -2,9 +2,9 @@
 
 You enter the GDB Dojo lobby.
 
-Seggy is sitting on the welcome desk, one eye open, one paw resting on the badge printer. The printer has produced a temporary badge word. Your job is to build the program, run it, read the badge word, and submit it.
+A temporary badge word is waiting inside the program. Build it, run it, read the word, and submit it.
 
-If it compiles, that only proves it compiles.
+> If it compiles, congratulations. You have a suspect.
 
 No GDB is required yet.
 

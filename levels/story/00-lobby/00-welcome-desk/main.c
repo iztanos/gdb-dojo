@@ -21,13 +21,6 @@ static void cyan(void)
     }
 }
 
-static void yellow(void)
-{
-    if (use_terminal_style()) {
-        printf("\033[33m");
-    }
-}
-
 static void green(void)
 {
     if (use_terminal_style()) {
@@ -60,22 +53,8 @@ static void print_header(void)
 
 static void print_lobby_scene(void)
 {
-    puts("The lobby terminal flickers.");
-    puts("A one-eyed cat looks up from behind the welcome desk.");
-    puts("");
-    yellow();
-    puts("Seggy:");
-    puts("  \"You ran the program. Good.");
-    puts("   Most mysteries start by doing the obvious thing.\"");
-    reset();
-    puts("");
-}
-
-static void print_badge_printer(void)
-{
-    puts("The badge printer clicks once.");
-    puts("Then twice.");
-    puts("Then makes a noise no printer should make.");
+    puts("The lobby terminal wakes.");
+    puts("A temporary badge is waiting.");
     puts("");
 }
 
@@ -90,10 +69,7 @@ static void print_badge_word(const char *badge_word)
 
 static void print_next_step(const char *badge_word)
 {
-    yellow();
-    puts("Seggy:");
-    puts("  \"Submit that word before the printer develops opinions.\"");
-    reset();
+    puts("\"If it compiles, congratulations. You have a suspect.\"");
     puts("");
     puts("Next:");
     green();
@@ -108,7 +84,6 @@ int main(void)
     clear_screen();
     print_header();
     print_lobby_scene();
-    print_badge_printer();
     print_badge_word(badge_word);
     print_next_step(badge_word);
 

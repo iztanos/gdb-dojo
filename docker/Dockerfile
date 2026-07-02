@@ -1,6 +1,7 @@
 FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV DEBUGINFOD_URLS=
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -23,6 +24,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 RUN useradd -m -s /bin/bash dojo
+RUN printf 'set debuginfod enabled off\n' > /home/dojo/.gdbinit \
+    && chown dojo:dojo /home/dojo/.gdbinit
 
 WORKDIR /dojo
 

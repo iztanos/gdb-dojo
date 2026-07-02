@@ -9,24 +9,24 @@ dojo_clear
 
 if [ $# -lt 1 ]; then
     dojo_error "Usage:"
-    echo "  ./check.sh BADGE_WORD"
+    echo "  ./check.sh PHRASE"
     exit 1
 fi
 
 answer=$(printf '%s' "$1" | tr -d '[:space:]' | tr '[:lower:]' '[:upper:]')
 
-if [ "$answer" = "WHISKER" ]; then
+if [ "$answer" = "BLINK" ]; then
     mkdir -p "$repo_dir/.dojo/completed" "$repo_dir/.dojo/unlocked"
-    touch "$repo_dir/.dojo/completed/story-00-lobby-00-welcome-desk"
-    touch "$repo_dir/.dojo/unlocked/story-00-lobby-01-glass-box"
+    touch "$repo_dir/.dojo/completed/story-00-lobby-01-glass-box"
+    touch "$repo_dir/.dojo/unlocked/story-00-lobby-02-moving-door"
 
     dojo_header "CORRECT"
     echo
-    dojo_success "Badge accepted."
+    dojo_success "Observation accepted."
     echo
     echo "Progress:"
-    echo "  completed  story/00-lobby/00-welcome-desk"
-    echo "  unlocked   story/00-lobby/01-glass-box"
+    echo "  completed  story/00-lobby/01-glass-box"
+    echo "  unlocked   story/00-lobby/02-moving-door"
     echo
     echo "Next:"
     dojo_cmd "./dojo lobby"
@@ -35,9 +35,9 @@ fi
 
 dojo_header "NOT QUITE"
 echo
-dojo_error "Badge word did not match."
+dojo_error "Observation phrase did not match."
 echo
 echo "Try again:"
-dojo_cmd "./welcome"
-dojo_cmd "./check.sh BADGE_WORD"
+dojo_cmd "./glassbox"
+dojo_cmd "./check.sh PHRASE"
 exit 1

@@ -4,6 +4,8 @@ fi
 
 cd /dojo 2>/dev/null || true
 
+export DEBUGINFOD_URLS=
+
 printf '\033[2J\033[H'
 
 cat <<'EOF'

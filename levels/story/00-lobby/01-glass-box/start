@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -e
+
+exercise_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_dir="$(cd "$exercise_dir/../../../.." && pwd)"
+cd "$exercise_dir"
+
+. "$repo_dir/lib/dojo-ui.sh"
+
+dojo_clear
+
+dojo_header "01: THE GLASS BOX"
+echo
+
+cat <<'EOF'
+"Run it again. This time, watch."
+
+Mission:
+  Build the program.
+  Open it in GDB.
+  Run it from inside GDB.
+  Submit the observation phrase.
+
+You will practice:
+  - starting GDB with a program
+  - using run
+  - leaving GDB with quit
+
+Type these next:
+EOF
+
+dojo_cmd "make"
+dojo_cmd "gdb ./glassbox"
+echo
+
+echo "Inside GDB:"
+dojo_cmd "run"
+dojo_cmd "quit"
+echo
+
+echo "Then submit:"
+dojo_cmd "./check.sh PHRASE"

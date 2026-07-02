@@ -5,6 +5,8 @@
 *.out
 playground/hello
 levels/**/welcome
+levels/**/glassbox
+levels/**/moving-door
 *.a
 *.so
 *.dll
@@ -15,6 +17,7 @@ core
 core.*
 *.core
 *.dSYM/
+.dojo/
 
 # CMake and Make build directories
 build/

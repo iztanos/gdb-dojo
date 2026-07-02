@@ -42,6 +42,8 @@ The repo is mounted at `/dojo`. The container includes GDB, GCC, G++, Make, Vim,
 
 The browser terminal starts in `/dojo` with a small welcome screen and a `dojo:` prompt.
 
+The container also enables the narrow debugging permissions GDB needs for local practice. It does not use privileged mode.
+
 Use the helper to see modes and levels:
 
 ```bash
@@ -60,7 +62,7 @@ make
 gdb ./hello
 ```
 
-You can also try the first Story Mode exercise after setup:
+You can also try Story Mode after setup:
 
 ```bash
 cd levels/story/00-lobby/00-welcome-desk
