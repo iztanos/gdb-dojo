@@ -36,7 +36,7 @@ Inside the browser terminal:
 
 ```bash
 dojo
-dojo lobby
+dojo paths
 ```
 
 The CLI uses color when supported. Set `NO_COLOR=1` to disable color output.

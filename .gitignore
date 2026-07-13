@@ -7,6 +7,7 @@ playground/hello
 levels/**/welcome
 levels/**/glassbox
 levels/**/moving-door
+levels/**/seggy-fault
 *.a
 *.so
 *.dll

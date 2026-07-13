@@ -11,11 +11,12 @@ printf '\033[2J\033[H'
 cat <<'EOF'
 GDB Dojo local terminal
 
-Start here:
-  dojo
-  dojo lobby
+Repo: /dojo
 
-Inside an exercise:
+Useful:
+  ls
+  dojo paths
+  cd levels/story/00-lobby/00-welcome-desk
   start
 EOF
 
@@ -35,7 +36,7 @@ start() {
     if [ -f ./start ]; then
         bash ./start "$@"
     else
-        echo "No start script in this directory."
-        echo "Move into an exercise directory, then run start."
+        echo "No ./start file here."
+        echo "Use 'dojo paths' to find an exercise directory."
     fi
 }

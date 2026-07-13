@@ -9,16 +9,19 @@ dojo_clear
 
 if [ $# -lt 1 ]; then
     dojo_error "Usage:"
-    echo "  ./check.sh BADGE_WORD"
+    echo "  ./check.sh ACCESS_CODE"
     exit 1
 fi
 
-answer=$(printf '%s' "$1" | tr -d '[:space:]' | tr '[:lower:]' '[:upper:]')
+answer=$(printf '%s' "$1" | tr -d '[:space:]')
 
-if [ "$answer" = "WHISKER" ]; then
+if [ "$answer" = "7319" ]; then
     dojo_header "CORRECT"
     echo
-    dojo_success "Badge accepted."
+    dojo_success "Access granted."
+    echo
+    echo "Completed:"
+    echo "  story/00-lobby/03-seggy-fault"
     echo
     echo "Next:"
     dojo_cmd "dojo paths"
@@ -27,9 +30,6 @@ fi
 
 dojo_header "NOT QUITE"
 echo
-dojo_error "Badge word did not match."
-echo
-echo "Try again:"
-dojo_cmd "./welcome"
-dojo_cmd "./check.sh BADGE_WORD"
+dojo_error "Inspect the local variable:"
+dojo_cmd "access_code"
 exit 1

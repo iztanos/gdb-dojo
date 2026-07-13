@@ -10,22 +10,24 @@ print_help() {
     dojo_clear
     dojo_header "GDB DOJO" "Practical GDB training"
     echo
-    dojo_seggy 'Seggy says: "Trust, but print."'
+    printf "%bRepository map%b\n" "$BOLD$CYAN" "$RESET"
+    echo "  levels/story/00-lobby/00-welcome-desk"
+    echo "  levels/story/00-lobby/01-glass-box"
+    echo "  levels/story/00-lobby/02-moving-door"
+    echo "  levels/story/00-lobby/03-seggy-fault"
     echo
-    printf "%bStart:%b\n" "$BOLD$CYAN" "$RESET"
-    dojo_cmd "dojo lobby"
-    echo
-    echo "Modes:"
-    printf "  %-13s %-11s %s\n" "story" "started" "guided path for first-time GDB users"
-    printf "  %-13s %-11s %s\n" "beginner" "planned" "focused standalone drills"
-    printf "  %-13s %-11s %s\n" "intermediate" "planned" "realistic debugging tasks"
-    printf "  %-13s %-11s %s\n" "advanced" "planned" "harder debugging scenarios"
+    printf "%bTypical flow%b\n" "$BOLD$CYAN" "$RESET"
+    dojo_cmd "cd levels/story/00-lobby/00-welcome-desk"
+    dojo_cmd "start"
+    dojo_cmd "make"
+    dojo_cmd "./welcome"
     echo
     echo "Commands:"
-    echo "  dojo modes             show available modes"
-    echo "  dojo story             show Story Mode levels"
-    echo "  dojo lobby             show Level 0 exercises"
-    echo "  dojo help              show this help"
+    echo "  dojo paths    show exercise paths"
+    echo "  dojo story    show Story Mode levels"
+    echo "  dojo lobby    show Level 0 exercises"
+    echo "  dojo modes    show planned modes"
+    echo "  dojo help     show this screen"
 }
 
 show_modes() {
@@ -42,30 +44,37 @@ show_modes() {
 show_story() {
     dojo_clear
     printf "%bStory Mode%b\n\n" "$BOLD$CYAN" "$RESET"
-    printf "%-15s  %-9s  %s\n" "Level" "Status" "Path"
-    printf "%-15s  %-9s  %s\n" "--------------" "---------" "---------------------------"
-    printf "%-15s  %-9s  %s\n" "00-lobby" "started" "levels/story/00-lobby"
+    printf "%-10s  %-9s  %s\n" "Level" "Status" "Path"
+    printf "%-10s  %-9s  %s\n" "----------" "---------" "---------------------------"
+    printf "%-10s  %-9s  %s\n" "00-lobby" "active" "levels/story/00-lobby"
 }
 
 show_lobby() {
     dojo_clear
     dojo_header "STORY MODE / LEVEL 0" "The Lobby"
     echo
-    echo "Exercises:"
-    printf "%b  00-welcome-desk%b\n" "$GREEN" "$RESET"
-    echo "    Build and run your first dojo program."
+    printf "%-18s  %-26s  %s\n" "Exercise" "Skill" "Path"
+    printf "%-18s  %-26s  %s\n" "------------------" "--------------------------" "-------------------------------------------"
+    printf "%-18s  %-26s  %s\n" "00-welcome-desk" "build, run, submit" "levels/story/00-lobby/00-welcome-desk"
+    printf "%-18s  %-26s  %s\n" "01-glass-box" "run inside GDB" "levels/story/00-lobby/01-glass-box"
+    printf "%-18s  %-26s  %s\n" "02-moving-door" "breakpoint at main" "levels/story/00-lobby/02-moving-door"
+    printf "%-18s  %-26s  %s\n" "03-seggy-fault" "inspect local variables" "levels/story/00-lobby/03-seggy-fault"
     echo
-    printf "%b  01-glass-box%b\n" "$GREEN" "$RESET"
-    echo "    Run a program inside GDB."
-    echo
-    printf "%b  02-moving-door%b\n" "$GREEN" "$RESET"
-    echo "    Set your first breakpoint."
-    echo
-    printf "%b  03-seggy-fault%b\n" "$DIM" "$RESET"
-    echo "    Planned: inspect a local variable."
-    echo
-    printf "%bEnter:%b\n" "$GREEN" "$RESET"
+    printf "%bUse:%b\n" "$GREEN" "$RESET"
     dojo_cmd "cd levels/story/00-lobby/00-welcome-desk"
+    dojo_cmd "start"
+}
+
+show_paths() {
+    dojo_clear
+    printf "%bExercise paths%b\n\n" "$BOLD$CYAN" "$RESET"
+    echo "levels/story/00-lobby/00-welcome-desk"
+    echo "levels/story/00-lobby/01-glass-box"
+    echo "levels/story/00-lobby/02-moving-door"
+    echo "levels/story/00-lobby/03-seggy-fault"
+    echo
+    printf "%bExample%b\n" "$BOLD$CYAN" "$RESET"
+    dojo_cmd "cd levels/story/00-lobby/01-glass-box"
     dojo_cmd "start"
 }
 
@@ -81,6 +90,9 @@ case "${1:-help}" in
         ;;
     lobby)
         show_lobby
+        ;;
+    paths)
+        show_paths
         ;;
     *)
         dojo_error "Unknown command: $1"
