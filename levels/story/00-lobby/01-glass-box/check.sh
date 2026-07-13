@@ -21,7 +21,7 @@ if [ "$answer" = "BLINK" ]; then
     dojo_success "Observation accepted."
     echo
     echo "Next:"
-    dojo_cmd "./dojo lobby"
+    dojo_cmd "dojo lobby"
     exit 0
 fi
 

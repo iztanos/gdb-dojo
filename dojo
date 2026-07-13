@@ -13,7 +13,7 @@ print_help() {
     dojo_seggy 'Seggy says: "Trust, but print."'
     echo
     printf "%bStart:%b\n" "$BOLD$CYAN" "$RESET"
-    dojo_cmd "./dojo lobby"
+    dojo_cmd "dojo lobby"
     echo
     echo "Modes:"
     printf "  %-13s %-11s %s\n" "story" "started" "guided path for first-time GDB users"
@@ -22,10 +22,10 @@ print_help() {
     printf "  %-13s %-11s %s\n" "advanced" "planned" "harder debugging scenarios"
     echo
     echo "Commands:"
-    echo "  ./dojo modes             show available modes"
-    echo "  ./dojo story             show Story Mode levels"
-    echo "  ./dojo lobby             show Level 0 exercises"
-    echo "  ./dojo help              show this help"
+    echo "  dojo modes             show available modes"
+    echo "  dojo story             show Story Mode levels"
+    echo "  dojo lobby             show Level 0 exercises"
+    echo "  dojo help              show this help"
 }
 
 show_modes() {
