@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -e
+
+exercise_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_dir="$(cd "$exercise_dir/../../../.." && pwd)"
+cd "$exercise_dir"
+
+. "$repo_dir/lib/dojo-ui.sh"
+
+dojo_clear
+
+dojo_header "04: STAMP MACHINE"
+echo
+
+cat <<'EOF'
+Mission
+  Follow the call into make_stamp().
+  Find the value returned into the variable named stamp.
+
+Commands
+EOF
+dojo_cmd "make"
+dojo_cmd "gdb -q ./stamp-machine"
+echo
+
+cat <<'EOF'
+Inside GDB
+EOF
+dojo_cmd "break main"
+dojo_cmd "run"
+dojo_cmd "next"
+dojo_cmd "step"
+dojo_cmd "finish"
+dojo_cmd "next"
+dojo_cmd "print stamp"
+dojo_cmd "quit"
+echo
+
+cat <<'EOF'
+Submit
+EOF
+dojo_cmd "./check.sh STAMP_VALUE"
+echo
+
+cat <<'EOF'
+"Functions are just rooms pretending not to have doors."
+EOF

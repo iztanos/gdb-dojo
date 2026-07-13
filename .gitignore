@@ -8,6 +8,7 @@ levels/**/welcome
 levels/**/glassbox
 levels/**/moving-door
 levels/**/seggy-fault
+levels/**/stamp-machine
 *.a
 *.so
 *.dll

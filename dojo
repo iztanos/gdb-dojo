@@ -15,6 +15,7 @@ print_help() {
     echo "  levels/story/00-lobby/01-glass-box"
     echo "  levels/story/00-lobby/02-moving-door"
     echo "  levels/story/00-lobby/03-seggy-fault"
+    echo "  levels/story/00-lobby/04-stamp-machine"
     echo
     printf "%bTypical flow%b\n" "$BOLD$CYAN" "$RESET"
     dojo_cmd "cd levels/story/00-lobby/00-welcome-desk"
@@ -59,6 +60,8 @@ show_lobby() {
     printf "%-18s  %-26s  %s\n" "01-glass-box" "run inside GDB" "levels/story/00-lobby/01-glass-box"
     printf "%-18s  %-26s  %s\n" "02-moving-door" "breakpoint at main" "levels/story/00-lobby/02-moving-door"
     printf "%-18s  %-26s  %s\n" "03-seggy-fault" "inspect local variables" "levels/story/00-lobby/03-seggy-fault"
+    printf "%-18s  %-26s  %s\n" "04-stamp-machine" "step into functions" "levels/story/00-lobby/04-stamp-machine"
+    printf "%-18s  %-26s  %s\n" "05-lobby-exit" "planned: capstone" "levels/story/00-lobby/05-lobby-exit"
     echo
     printf "%bUse:%b\n" "$GREEN" "$RESET"
     dojo_cmd "cd levels/story/00-lobby/00-welcome-desk"
@@ -72,6 +75,7 @@ show_paths() {
     echo "levels/story/00-lobby/01-glass-box"
     echo "levels/story/00-lobby/02-moving-door"
     echo "levels/story/00-lobby/03-seggy-fault"
+    echo "levels/story/00-lobby/04-stamp-machine"
     echo
     printf "%bExample%b\n" "$BOLD$CYAN" "$RESET"
     dojo_cmd "cd levels/story/00-lobby/01-glass-box"
