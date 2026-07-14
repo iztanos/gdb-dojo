@@ -33,5 +33,5 @@ quit
 ## Submit
 
 ```bash
-./check.sh CONTINUED
+./check.sh STATUS_VALUE
 ```

@@ -40,4 +40,4 @@ echo
 cat <<'EOF'
 Submit
 EOF
-dojo_cmd "./check.sh RUNNING"
+dojo_cmd "./check.sh STATUS_VALUE"

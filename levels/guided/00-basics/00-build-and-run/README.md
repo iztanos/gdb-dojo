@@ -24,5 +24,5 @@ make
 ## Submit
 
 ```bash
-./check.sh READY
+./check.sh STATUS_VALUE
 ```

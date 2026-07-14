@@ -33,4 +33,4 @@ echo
 cat <<'EOF'
 Submit
 EOF
-dojo_cmd "./check.sh READY"
+dojo_cmd "./check.sh STATUS_VALUE"
