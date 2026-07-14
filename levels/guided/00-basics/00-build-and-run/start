@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -e
+
+exercise_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_dir="$(cd "$exercise_dir/../../../.." && pwd)"
+cd "$exercise_dir"
+
+. "$repo_dir/lib/dojo-ui.sh"
+
+dojo_clear
+
+dojo_header "GUIDED PATH / BASICS" "Exercise 00: Build and Run"
+echo
+
+cat <<'EOF'
+Skill
+  Build a C program and run the compiled binary.
+
+Goal
+  Compile the program, run it, and submit the status value it prints.
+
+Build
+EOF
+dojo_cmd "make"
+echo
+
+cat <<'EOF'
+Run
+EOF
+dojo_cmd "./build-and-run"
+echo
+
+cat <<'EOF'
+Submit
+EOF
+dojo_cmd "./check.sh READY"

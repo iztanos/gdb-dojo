@@ -2,11 +2,13 @@
 
 ## Current Status
 
-GDB Dojo is early. The local browser terminal exists, and the first Story Mode exercise is available.
+GDB Dojo is early. The local browser terminal exists, and the Guided Path Basics exercises are available.
+
+Docker is only required for the local browser terminal. Exercises can also be run directly with a local GDB, GCC, and Make setup.
 
 ## Option 1: Local Browser Terminal With Docker
 
-Docker is only required for the browser terminal path. This is the easiest and most consistent setup once Docker is installed. The launcher scripts start Docker Compose and open the browser automatically.
+This is the easiest and most consistent setup once Docker is installed. The launcher scripts start Docker Compose and open the browser automatically.
 
 ```bash
 git clone https://github.com/iztanos/gdb-dojo.git
@@ -38,35 +40,23 @@ If the browser does not open automatically, visit:
 
 [http://localhost:7681](http://localhost:7681)
 
-The repo is mounted at `/dojo`. The container includes GDB, GCC, G++, Make, Vim, Nano, binutils, and related tools. This avoids installing GDB directly on the host system.
+The repo is mounted at `/dojo`. The container includes GDB, GCC, G++, Make, Vim, Nano, binutils, and related tools.
 
-The browser terminal starts in `/dojo` with a small welcome screen and a `dojo:` prompt.
-
-The container also enables the narrow debugging permissions GDB needs for local practice. It does not use privileged mode.
-
-Use the helper to see modes and levels:
+Use the helper to explore:
 
 ```bash
 dojo
 dojo paths
+dojo basics
 ```
 
-The CLI uses color when supported. Set `NO_COLOR=1` to disable color output.
-
-Try the playground:
+Try the first Guided Path exercise:
 
 ```bash
-cd playground
-make
-./hello
-gdb ./hello
-```
-
-You can also try Story Mode after setup:
-
-```bash
-cd levels/story/00-lobby/00-welcome-desk
+cd levels/guided/00-basics/00-build-and-run
 start
+make
+./build-and-run
 ```
 
 To stop the container:
@@ -86,27 +76,28 @@ gdbq        start gdb quietly
 start       run ./start in the current exercise directory
 ```
 
+The CLI uses color when supported. Set `NO_COLOR=1` to disable color output.
+
 ## Option 2: Debug Files On Your Own System
 
-Exercises should be simple enough that users can download or copy the program files and debug locally without the browser terminal. This is useful for people who already have GDB, GCC, and Make installed, or for machines where Docker is unavailable.
+Exercises are simple enough to run locally without the browser terminal. This is useful for people who already have GDB, GCC, and Make installed, or for machines where Docker is unavailable.
 
-The current playground can be run this way:
+Example:
 
 ```bash
-cd playground
+cd levels/guided/00-basics/00-build-and-run
 make
-./hello
-gdb ./hello
+./build-and-run
 ```
 
-Typical commands may look like:
+Typical compile/debug commands may look like:
 
 ```bash
 gcc -g -O0 -Wall -Wextra -o program main.c
 gdb ./program
 ```
 
-Exact commands may vary per exercise. Each exercise should eventually include its own build instructions.
+Exact commands vary per exercise. Each exercise includes its own instructions.
 
 ## Linux Setup
 
@@ -172,7 +163,13 @@ make --version
 Restore a changed exercise:
 
 ```bash
-git restore levels/story/00-lobby/00-welcome-desk
+git restore levels/guided/00-basics/03-inspect-locals
+```
+
+Clean Basics build outputs:
+
+```bash
+make clean-guided-basics
 ```
 
 ## Troubleshooting

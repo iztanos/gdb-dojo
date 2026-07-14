@@ -1,12 +1,12 @@
-.PHONY: reset-progress clean-story-0
+.PHONY: reset-progress clean-guided-basics
 
 reset-progress:
 	rm -rf .dojo
 
-clean-story-0:
-	$(MAKE) -C levels/story/00-lobby/00-welcome-desk clean
-	$(MAKE) -C levels/story/00-lobby/01-glass-box clean
-	$(MAKE) -C levels/story/00-lobby/02-moving-door clean
-	$(MAKE) -C levels/story/00-lobby/03-seggy-fault clean
-	$(MAKE) -C levels/story/00-lobby/04-stamp-machine clean
-	$(MAKE) -C levels/story/00-lobby/05-lobby-exit clean
+clean-guided-basics:
+	$(MAKE) -C levels/guided/00-basics/00-build-and-run clean
+	$(MAKE) -C levels/guided/00-basics/01-run-in-gdb clean
+	$(MAKE) -C levels/guided/00-basics/02-first-breakpoint clean
+	$(MAKE) -C levels/guided/00-basics/03-inspect-locals clean
+	$(MAKE) -C levels/guided/00-basics/04-step-into-functions clean
+	$(MAKE) -C levels/guided/00-basics/05-basics-capstone clean

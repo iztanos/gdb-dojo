@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+set -e
+
+exercise_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_dir="$(cd "$exercise_dir/../../../.." && pwd)"
+cd "$exercise_dir"
+
+. "$repo_dir/lib/dojo-ui.sh"
+
+dojo_clear
+
+dojo_header "GUIDED PATH / BASICS" "Exercise 04: Step Into Functions"
+echo
+
+cat <<'EOF'
+Skill
+  Step into a helper function and finish back to main.
+
+Goal
+  Find the value returned into result.
+
+Build
+EOF
+dojo_cmd "make"
+echo
+
+cat <<'EOF'
+Debug
+EOF
+dojo_cmd "gdb -q ./step-functions"
+echo
+
+cat <<'EOF'
+Inside GDB
+EOF
+dojo_cmd "break main"
+dojo_cmd "run"
+dojo_cmd "step"
+dojo_cmd "finish"
+dojo_cmd "print result"
+dojo_cmd "quit"
+echo
+
+cat <<'EOF'
+Submit
+EOF
+dojo_cmd "./check.sh RESULT_VALUE"

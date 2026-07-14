@@ -11,76 +11,75 @@ print_help() {
     dojo_header "GDB DOJO" "Practical GDB training"
     echo
     printf "%bRepository map%b\n" "$BOLD$CYAN" "$RESET"
-    echo "  levels/story/00-lobby/00-welcome-desk"
-    echo "  levels/story/00-lobby/01-glass-box"
-    echo "  levels/story/00-lobby/02-moving-door"
-    echo "  levels/story/00-lobby/03-seggy-fault"
-    echo "  levels/story/00-lobby/04-stamp-machine"
-    echo "  levels/story/00-lobby/05-lobby-exit"
+    echo "  levels/guided/00-basics"
+    echo "  levels/beginner"
+    echo "  levels/intermediate"
+    echo "  levels/advanced"
     echo
     printf "%bTypical flow%b\n" "$BOLD$CYAN" "$RESET"
-    dojo_cmd "cd levels/story/00-lobby/00-welcome-desk"
+    dojo_cmd "cd levels/guided/00-basics/00-build-and-run"
     dojo_cmd "start"
     dojo_cmd "make"
-    dojo_cmd "./welcome"
+    dojo_cmd "./build-and-run"
     echo
     echo "Commands:"
-    echo "  dojo paths    show exercise paths"
-    echo "  dojo story    show Story Mode levels"
-    echo "  dojo lobby    show Level 0 exercises"
-    echo "  dojo modes    show planned modes"
-    echo "  dojo help     show this screen"
+    echo "  dojo paths"
+    echo "  dojo guided"
+    echo "  dojo basics"
+    echo "  dojo modes"
+    echo "  dojo help"
 }
 
 show_modes() {
     dojo_clear
     printf "%bModes%b\n\n" "$BOLD$CYAN" "$RESET"
-    printf "%-16s  %-9s  %s\n" "Mode" "Status" "Best for"
-    printf "%-16s  %-9s  %s\n" "--------------" "---------" "----------------------------------"
-    printf "%-16s  %-9s  %s\n" "Story Mode" "started" "first-time GDB users"
-    printf "%-16s  %-9s  %s\n" "Beginner" "planned" "standalone skill drills"
-    printf "%-16s  %-9s  %s\n" "Intermediate" "planned" "realistic debugging tasks"
-    printf "%-16s  %-9s  %s\n" "Advanced" "planned" "harder scenarios"
+    printf "%-14s  %-9s  %s\n" "Mode" "Status" "Best for"
+    printf "%-14s  %-9s  %s\n" "--------------" "---------" "--------------------------------"
+    printf "%-14s  %-9s  %s\n" "Guided Path" "available" "first-time GDB users"
+    printf "%-14s  %-9s  %s\n" "Beginner" "planned" "standalone skill drills"
+    printf "%-14s  %-9s  %s\n" "Intermediate" "planned" "realistic debugging tasks"
+    printf "%-14s  %-9s  %s\n" "Advanced" "planned" "harder scenarios"
 }
 
-show_story() {
+show_guided() {
     dojo_clear
-    printf "%bStory Mode%b\n\n" "$BOLD$CYAN" "$RESET"
-    printf "%-10s  %-9s  %s\n" "Level" "Status" "Path"
-    printf "%-10s  %-9s  %s\n" "----------" "---------" "---------------------------"
-    printf "%-10s  %-9s  %s\n" "00-lobby" "active" "levels/story/00-lobby"
+    printf "%bGuided Path%b\n\n" "$BOLD$CYAN" "$RESET"
+    printf "%-10s  %-8s  %s\n" "Level" "Status" "Focus"
+    printf "%-10s  %-8s  %s\n" "----------" "--------" "-----------------------------------"
+    printf "%-10s  %-8s  %s\n" "00-basics" "complete" "core GDB workflow"
+    printf "%-10s  %-8s  %s\n" "01" "planned" "breakpoint control"
 }
 
-show_lobby() {
+show_basics() {
     dojo_clear
-    dojo_header "STORY MODE / LEVEL 0" "The Lobby"
+    dojo_header "GUIDED PATH / BASICS" "Core GDB workflow"
     echo
-    printf "%-18s  %-26s  %s\n" "Exercise" "Skill" "Path"
-    printf "%-18s  %-26s  %s\n" "------------------" "--------------------------" "-------------------------------------------"
-    printf "%-18s  %-26s  %s\n" "00-welcome-desk" "build, run, submit" "levels/story/00-lobby/00-welcome-desk"
-    printf "%-18s  %-26s  %s\n" "01-glass-box" "run inside GDB" "levels/story/00-lobby/01-glass-box"
-    printf "%-18s  %-26s  %s\n" "02-moving-door" "breakpoint at main" "levels/story/00-lobby/02-moving-door"
-    printf "%-18s  %-26s  %s\n" "03-seggy-fault" "inspect local variables" "levels/story/00-lobby/03-seggy-fault"
-    printf "%-18s  %-26s  %s\n" "04-stamp-machine" "step into functions" "levels/story/00-lobby/04-stamp-machine"
-    printf "%-18s  %-26s  %s\n" "05-lobby-exit" "Level 0 capstone" "levels/story/00-lobby/05-lobby-exit"
+    printf "%-24s  %-28s  %s\n" "Exercise" "Skill" "Path"
+    printf "%-24s  %-28s  %s\n" "------------------------" "----------------------------" "---------------------------------------------"
+    printf "%-24s  %-28s  %s\n" "00-build-and-run" "build and run" "levels/guided/00-basics/00-build-and-run"
+    printf "%-24s  %-28s  %s\n" "01-run-in-gdb" "run inside GDB" "levels/guided/00-basics/01-run-in-gdb"
+    printf "%-24s  %-28s  %s\n" "02-first-breakpoint" "break at main, continue" "levels/guided/00-basics/02-first-breakpoint"
+    printf "%-24s  %-28s  %s\n" "03-inspect-locals" "info locals, print" "levels/guided/00-basics/03-inspect-locals"
+    printf "%-24s  %-28s  %s\n" "04-step-into-functions" "step, finish" "levels/guided/00-basics/04-step-into-functions"
+    printf "%-24s  %-28s  %s\n" "05-basics-capstone" "combined workflow" "levels/guided/00-basics/05-basics-capstone"
     echo
     printf "%bUse:%b\n" "$GREEN" "$RESET"
-    dojo_cmd "cd levels/story/00-lobby/00-welcome-desk"
+    dojo_cmd "cd levels/guided/00-basics/00-build-and-run"
     dojo_cmd "start"
 }
 
 show_paths() {
     dojo_clear
     printf "%bExercise paths%b\n\n" "$BOLD$CYAN" "$RESET"
-    echo "levels/story/00-lobby/00-welcome-desk"
-    echo "levels/story/00-lobby/01-glass-box"
-    echo "levels/story/00-lobby/02-moving-door"
-    echo "levels/story/00-lobby/03-seggy-fault"
-    echo "levels/story/00-lobby/04-stamp-machine"
-    echo "levels/story/00-lobby/05-lobby-exit"
+    echo "levels/guided/00-basics/00-build-and-run"
+    echo "levels/guided/00-basics/01-run-in-gdb"
+    echo "levels/guided/00-basics/02-first-breakpoint"
+    echo "levels/guided/00-basics/03-inspect-locals"
+    echo "levels/guided/00-basics/04-step-into-functions"
+    echo "levels/guided/00-basics/05-basics-capstone"
     echo
     printf "%bExample%b\n" "$BOLD$CYAN" "$RESET"
-    dojo_cmd "cd levels/story/00-lobby/01-glass-box"
+    dojo_cmd "cd levels/guided/00-basics/01-run-in-gdb"
     dojo_cmd "start"
 }
 
@@ -91,11 +90,11 @@ case "${1:-help}" in
     modes)
         show_modes
         ;;
-    story)
-        show_story
+    guided)
+        show_guided
         ;;
-    lobby)
-        show_lobby
+    basics)
+        show_basics
         ;;
     paths)
         show_paths

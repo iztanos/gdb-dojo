@@ -44,14 +44,6 @@ dojo_header() {
     printf "%b+------------------------------------------------------------+%b\n" "$CYAN" "$RESET"
 }
 
-dojo_seggy() {
-    message="$1"
-
-    printf "%b /\\_/\\%b\n" "$YELLOW" "$RESET"
-    printf "%b( o.- )  %s%b\n" "$YELLOW" "$message" "$RESET"
-    printf "%b > ^ <%b\n" "$YELLOW" "$RESET"
-}
-
 dojo_cmd() {
     printf "%b  %s%b\n" "$GREEN" "$1" "$RESET"
 }
@@ -75,7 +67,6 @@ EOF
 }
 
 dojo_print_header() { dojo_header "$@"; }
-dojo_print_seggy() { dojo_seggy "$@"; }
 dojo_print_command() { dojo_cmd "$@"; }
 dojo_print_success() { dojo_success "$@"; }
 dojo_print_error() { dojo_error "$@"; }

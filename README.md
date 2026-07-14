@@ -10,9 +10,13 @@
  break -> run -> inspect -> understand
 ```
 
-GDB Dojo is a hands-on GDB practice project for learning real software debugging.
+GDB Dojo is a hands-on GDB practice project for learning practical software debugging.
 
-It includes a local browser terminal, a guided Story Mode, and space for standalone beginner/intermediate/advanced exercises.
+It provides:
+
+- a local browser terminal
+- a Guided Path for first-time GDB users
+- standalone Beginner, Intermediate, and Advanced exercises
 
 ## Start
 
@@ -28,8 +32,6 @@ macOS/Linux:
 ./start-dojo.sh
 ```
 
-Then follow the terminal welcome message.
-
 For full setup instructions, see [docs/SETUP.md](docs/SETUP.md).
 
 Inside the browser terminal:
@@ -39,35 +41,35 @@ dojo
 dojo paths
 ```
 
-The CLI uses color when supported. Set `NO_COLOR=1` to disable color output.
-
 ## Modes
 
-| Mode | Best for | Status | Link |
-|---|---|---|---|
-| Story Mode | First-time GDB users | Started | [levels/story](levels/story) |
-| Beginner | Standalone skill drills | Planned | [levels/beginner](levels/beginner) |
-| Intermediate | Realistic debugging tasks | Planned | [levels/intermediate](levels/intermediate) |
-| Advanced | Harder scenarios | Planned | [levels/advanced](levels/advanced) |
+| Mode | Best for | Status |
+|---|---|---|
+| Guided Path | First-time GDB users | Available |
+| Beginner | Standalone skill drills | Planned |
+| Intermediate | Realistic debugging tasks | Planned |
+| Advanced | Harder debugging scenarios | Planned |
 
-## First Exercise
+## Guided Path
 
-`levels/story/00-lobby/00-welcome-desk`
+| Level | Focus | Link |
+|---|---|---|
+| 00 - Basics | Build, run, inspect, step, and combine fundamentals | [levels/guided/00-basics](levels/guided/00-basics) |
 
-Inside the exercise directory, run:
+## First exercise
+
+```text
+levels/guided/00-basics/00-build-and-run
+```
+
+Inside the exercise directory:
 
 ```bash
 start
 ```
 
-See the exercise README for manual commands.
-
-## Resetting
-
-For reset and restore commands, see [docs/SETUP.md](docs/SETUP.md#resetting).
-
 ## Contributing
 
-People can contribute their own debugging exercises, improve existing ones, or suggest new Story Mode ideas. See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
+People can contribute standalone exercises, improve existing exercises, or propose additions to the Guided Path.
 
-All future practice content will be designed for local debugging scenarios.
+See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).

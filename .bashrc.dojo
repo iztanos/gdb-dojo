@@ -11,12 +11,15 @@ printf '\033[2J\033[H'
 cat <<'EOF'
 GDB Dojo local terminal
 
-Repo: /dojo
+Repository:
+  /dojo
 
-Useful:
-  ls
+Explore:
+  dojo
   dojo paths
-  cd levels/story/00-lobby/00-welcome-desk
+
+Guided Path:
+  cd levels/guided/00-basics/00-build-and-run
   start
 EOF
 

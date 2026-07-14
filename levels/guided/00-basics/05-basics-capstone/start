@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -e
+
+exercise_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_dir="$(cd "$exercise_dir/../../../.." && pwd)"
+cd "$exercise_dir"
+
+. "$repo_dir/lib/dojo-ui.sh"
+
+dojo_clear
+
+dojo_header "GUIDED PATH / BASICS" "Exercise 05: Basics Capstone"
+echo
+
+cat <<'EOF'
+Skill
+  Combine the Basics commands in one debugging pass.
+
+Goal
+  Find the value stored in final_value.
+
+Build
+EOF
+dojo_cmd "make"
+echo
+
+cat <<'EOF'
+Debug
+EOF
+dojo_cmd "gdb -q ./basics-capstone"
+echo
+
+cat <<'EOF'
+Inside GDB
+EOF
+dojo_cmd "break main"
+dojo_cmd "run"
+dojo_cmd "next"
+dojo_cmd "step"
+dojo_cmd "finish"
+dojo_cmd "next"
+dojo_cmd "print final_value"
+dojo_cmd "continue"
+dojo_cmd "quit"
+echo
+
+cat <<'EOF'
+Submit
+EOF
+dojo_cmd "./check.sh FINAL_VALUE"

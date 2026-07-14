@@ -2,7 +2,7 @@
 
 ## Current Status
 
-GDB Dojo is early. Setup docs, the local browser terminal, and the first Story Mode exercise exist.
+GDB Dojo is early. Setup docs, the local browser terminal, and the Guided Path Basics exercises exist.
 
 ## Good First Contributions
 
@@ -12,17 +12,31 @@ GDB Dojo is early. Setup docs, the local browser terminal, and the first Story M
 - Suggest or add small standalone debugging exercises.
 - Fix typos or broken commands.
 
-## Future Exercise Contributions
+## Contribution Areas
 
-Standalone exercises should go under the right mode folder:
+| Contribution | Location |
+|---|---|
+| Guided curriculum exercise | `levels/guided/` |
+| Beginner drill | `levels/beginner/` |
+| Intermediate lab | `levels/intermediate/` |
+| Advanced lab | `levels/advanced/` |
+| Setup/docs improvement | `docs/` or root README |
 
-| Contribution type | Where it goes | Notes |
-|---|---|---|
-| Beginner exercise | `levels/beginner/` | One focused GDB concept |
-| Intermediate exercise | `levels/intermediate/` | More realistic debugging task |
-| Advanced exercise | `levels/advanced/` | Harder scenario, added later |
-| Story idea | `levels/story/` | Discuss first to keep the guided path consistent |
-| Docs/setup fix | README or docs | Keep changes short and practical |
+The Guided Path is curated and ordered. Open an issue before changing its sequence or adding to it.
+
+Beginner, Intermediate, and Advanced exercises are standalone and may be contributed more freely.
+
+## Standalone Exercise Guidelines
+
+New standalone exercises should:
+
+- teach a clear debugging skill
+- stay small and deterministic
+- run locally with GDB, GCC, and Make
+- include clear build, debug, and submit instructions
+- avoid hiding the answer in comments or filenames
+- keep C code readable
+- work in the browser terminal when possible
 
 Future standalone exercise structure will likely look like:
 
@@ -33,21 +47,6 @@ levels/beginner/00-example/
   Makefile
   check.sh
 ```
-
-This structure may change because the project is early.
-
-Story Mode contributions should be discussed or opened as an issue first because Story Mode needs a consistent sequence and tone.
-
-Exercise contribution guidelines:
-
-- Keep exercises small.
-- Teach one main GDB concept at a time.
-- Include clear build, debug, and submit instructions.
-- Avoid hiding the answer in comments or filenames.
-- Prefer deterministic behavior.
-- Keep C code readable.
-- Make exercises runnable locally.
-- Make exercises compatible with the browser terminal when possible.
 
 ## Pull Request Checklist
 
