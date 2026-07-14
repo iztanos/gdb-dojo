@@ -30,6 +30,8 @@ fi
 
 dojo_header "NOT QUITE"
 echo
-dojo_error "Inspect the variable:"
-dojo_cmd "stamp"
+dojo_error "Inspect the returned value:"
+dojo_cmd "step"
+dojo_cmd "finish"
+dojo_cmd "print stamp"
 exit 1

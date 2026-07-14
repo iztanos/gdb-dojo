@@ -14,8 +14,9 @@ echo
 
 cat <<'EOF'
 Mission
-  Follow the call into make_stamp().
-  Find the value returned into the variable named stamp.
+  Step into make_stamp().
+  Let it return.
+  Inspect the value stored in stamp.
 
 Commands
 EOF
