@@ -11,6 +11,8 @@ It teaches the basic rhythm: read, build, run, inspect, and submit.
 | 02-moving-door | Available | break main, run, continue | [02-moving-door](02-moving-door) |
 | 03-seggy-fault | Available | info locals, print variable | [03-seggy-fault](03-seggy-fault) |
 | 04-stamp-machine | Available | step, finish, return value | [04-stamp-machine](04-stamp-machine) |
-| 05-lobby-exit | Planned | Level 0 capstone | - |
+| 05-lobby-exit | Available | Level 0 capstone | [05-lobby-exit](05-lobby-exit) |
+
+Level 0 is complete through the Lobby Exit capstone.
 
 If an exercise gets messy, reset it with `git restore` or use the cleanup commands in the setup guide.

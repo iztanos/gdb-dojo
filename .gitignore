@@ -9,6 +9,7 @@ levels/**/glassbox
 levels/**/moving-door
 levels/**/seggy-fault
 levels/**/stamp-machine
+levels/**/lobby-exit
 *.a
 *.so
 *.dll
