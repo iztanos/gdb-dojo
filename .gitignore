@@ -1,19 +1,26 @@
+# Exercise directories use an allowlist: only source and instruction files are
+# tracked, so compiled binaries are ignored automatically and adding a new
+# exercise never requires editing this file.
+levels/**/*
+!levels/**/
+!levels/**/*.c
+!levels/**/*.h
+!levels/**/*.md
+!levels/**/*.gdb
+!levels/**/Makefile
+!levels/**/check.sh
+!levels/**/start
+
 # Build outputs
 *.o
 *.obj
 *.exe
 *.out
-playground/hello
-levels/**/build-and-run
-levels/**/run-in-gdb
-levels/**/first-breakpoint
-levels/**/inspect-locals
-levels/**/step-functions
-levels/**/basics-capstone
 *.a
 *.so
 *.dll
 *.dylib
+playground/hello
 
 # Debug and crash artifacts
 core

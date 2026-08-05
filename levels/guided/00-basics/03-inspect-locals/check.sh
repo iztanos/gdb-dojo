@@ -4,30 +4,12 @@ set -e
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_dir="$(cd "$script_dir/../../../.." && pwd)"
 . "$repo_dir/lib/dojo-ui.sh"
+. "$repo_dir/lib/dojo-check.sh"
 
-dojo_clear
+dojo_require_answer $#
 
-if [ $# -lt 1 ]; then
-    dojo_error "Usage:"
-    echo "  ./check.sh ANSWER"
-    exit 1
-fi
-
-answer=$(printf '%s' "$1" | tr -d '[:space:]')
-
-if [ "$answer" = "7319" ]; then
-    dojo_header "CORRECT"
-    echo
-    dojo_success "Exercise complete."
-    echo
-    echo "Next:"
-    dojo_cmd "dojo paths"
-    exit 0
-fi
-
-dojo_header "NOT QUITE"
-echo
-dojo_error "Try:"
-dojo_cmd "info locals"
-dojo_cmd "print access_code"
-exit 1
+dojo_check "cd91c5876cd288087223b6e1b844a78dfeb0d2298d56814e3388934274fb9277" \
+    "$1" \
+    "digits" \
+    "info locals" \
+    "print access_code"
