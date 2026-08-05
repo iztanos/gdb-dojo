@@ -19,6 +19,9 @@ Explore:
   dojo next
   dojo doctor
 
+Stuck in an exercise:
+  hint
+
 Start where you left off:
   dojo next
 EOF
@@ -33,6 +36,10 @@ alias gdbq='gdb -q'
 
 dojo() {
     bash /dojo/dojo "$@"
+}
+
+hint() {
+    bash /dojo/dojo hint "$@"
 }
 
 start() {

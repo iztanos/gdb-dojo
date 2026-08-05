@@ -42,12 +42,16 @@ Exercise structure:
 
 ```text
 levels/beginner/00-example/
-  README.md     instructions
+  README.md     full walkthrough, including the commands
   main.c        source
   Makefile      must define TARGET
-  check.sh      answer checker
-  start         briefing shown by the `start` command
+  meta          everything that makes this exercise distinct
+  check.sh      shared stub, copy it verbatim
+  start         shared stub, copy it verbatim
 ```
+
+`start` and `check.sh` are identical across every exercise — copy them from an
+existing one. All the per-exercise content lives in `meta`.
 
 Plus one solution script used by the test suite:
 
@@ -58,39 +62,70 @@ tests/solutions/beginner-00-example.sh
 The filename is the exercise path with `levels/` removed and `/` replaced by
 `-`.
 
-### Answers Are Hashed
+### The meta File
 
-`check.sh` must never contain the answer in plaintext — anyone can read the
-file. Store a SHA-256 hash instead and let `lib/dojo-check.sh` do the
-comparison:
-
-```bash
-#!/usr/bin/env bash
-set -e
-
-script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-repo_dir="$(cd "$script_dir/../../.." && pwd)"
-. "$repo_dir/lib/dojo-ui.sh"
-. "$repo_dir/lib/dojo-check.sh"
-
-dojo_require_answer $#
-
-dojo_check "<sha256-of-normalized-answer>" \
-    "$1" \
-    "upper" \
-    "hint command" \
-    "another hint"
+```
+TRACK=Guided Path
+LEVEL=Basics
+NUMBER=03
+TITLE=Inspect Local Variables
+SKILL=Inspect variables that the program never prints.
+GOAL=Find the value stored in access_code.
+SUBMIT=ACCESS_CODE
+GDB=break main|run|next|info locals|print access_code
+ANSWER=cd91c587...
+MODE=digits
 ```
 
-Generate the hash from the *normalized* answer:
+`TRACK`, `TITLE`, `SKILL`, `GOAL`, and `ANSWER` are required; the suite fails
+without them.
+
+### Answers Are Hashed
+
+Never store the answer in plaintext — anyone can read the exercise directory.
+`ANSWER` holds the SHA-256 of the *normalized* answer:
 
 ```bash
 printf '%s' "ANSWER" | sha256sum
 ```
 
-Normalization modes: `upper` (strip whitespace, uppercase — the default for
-word answers), `digits` (strip whitespace, for numbers), `exact` (strip
-whitespace only, for case-sensitive answers).
+`MODE` controls normalization: `upper` (strip whitespace, uppercase — the
+default for word answers), `digits` (strip whitespace, for numbers), or `exact`
+(strip whitespace only, case-sensitive).
+
+The suite greps the built answer back out of `check.sh`, `README.md`, and
+`meta` as a whole word, so a leak fails CI rather than shipping.
+
+### Progressive Hints
+
+Every exercise defines `HINT1`, `HINT2`, ... in `meta`, ordered from a gentle
+nudge to a near-complete walkthrough. One more is revealed each time an answer
+is wrong, or when the learner runs `dojo hint`. Split a hint across lines with
+`|`.
+
+```
+HINT1=The value lives in a local variable the program never prints.|Stop while that variable is alive and look at it.
+HINT2=`break main` then `run` stops you at the top of main.
+HINT3=`info locals` lists every local in scope.
+```
+
+Numbering must be contiguous from 1 — the test suite enforces this, because a
+gap silently stops later hints from ever appearing.
+
+Hint prose must not contain the answer as a word. The suite checks this too,
+which is why one hint says "executes under the debugger" rather than "running".
+
+Two more keys shape the experience:
+
+```
+BRIEFING=full   # start lists the GDB commands (mechanics drills)
+BRIEFING=goal   # start states the goal only; commands come from hints
+TEACHES=break main:stop when execution reaches main|continue:resume
+```
+
+`BRIEFING=goal` is the default for anything past the introductory exercises, so
+learners solve rather than transcribe. `TEACHES` feeds `dojo cheatsheet`, which
+only lists commands from exercises the learner has actually completed.
 
 ### Solution Scripts
 
