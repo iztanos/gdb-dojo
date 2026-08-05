@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  exercises:
+    name: Exercises (build, solve, check)
+    runs-on: ubuntu-latest
+    env:
+      # Keep GDB from reaching out to debuginfod servers during CI.
+      DEBUGINFOD_URLS: ""
+      NO_COLOR: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gdb shellcheck
+
+      - name: Show versions
+        run: |
+          gcc --version | head -1
+          gdb --version | head -1
+          make --version | head -1
+          shellcheck --version | sed -n '2p'
+
+      - name: Run test suite
+        run: tests/run-tests.sh
+
+      - name: Confirm no build artifacts were committed
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Working tree is dirty after running the suite:"
+            git status --porcelain
+            exit 1
+          fi
+
+  compose:
+    name: Docker Compose config
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate compose file
+        run: docker compose config --quiet
+
+      - name: Build image
+        run: docker compose build

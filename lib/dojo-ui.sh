@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+#
+# Shared terminal UI helpers. Sourced by ./dojo, every exercise `start`, and
+# every exercise check.sh.
+
+# The color variables below are consumed by the scripts that source this file,
+# which shellcheck cannot see from here.
+# shellcheck disable=SC2034
 
 dojo_use_color() {
     { [ -t 1 ] || [ -n "${FORCE_COLOR:-}" ]; } && [ -z "${NO_COLOR:-}" ]
