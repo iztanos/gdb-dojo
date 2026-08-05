@@ -1,0 +1,15 @@
+TRACK=Guided Path
+LEVEL=Breakpoints
+NUMBER=00
+TITLE=Break on a Line
+SKILL=Stop on a specific source line, not just at a function.
+GOAL=Report the value stage_two holds when execution reaches line 7.
+SUBMIT=STAGE_TWO
+GDB=break main.c:7|run|info breakpoints|print stage_two
+ANSWER=3e1e967e9b793e908f8eae83c74dba9bcccce6a5535b4b462bd9994537bfe15c
+MODE=digits
+BRIEFING=goal
+TEACHES=break FILE:LINE:stop at an exact source line|info breakpoints:list every breakpoint and its hit count
+HINT1=Breaking on `transform` stops you too early: stage_two has not been assigned yet.|You need to stop further in, at a particular line.
+HINT2=`break main.c:7` stops just before line 7 runs, which means lines 5 and 6 have already executed.
+HINT3=After `run`, use `info breakpoints` to confirm it was hit, then `print stage_two`.

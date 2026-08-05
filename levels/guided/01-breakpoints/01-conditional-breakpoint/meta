@@ -1,0 +1,15 @@
+TRACK=Guided Path
+LEVEL=Breakpoints
+NUMBER=01
+TITLE=Conditional Breakpoint
+SKILL=Stop only when a condition holds, instead of on every hit.
+GOAL=Report the value checksum() returned for record 4217.
+SUBMIT=CHECKSUM
+GDB=break main.c:14 if id == 4217|run|next|print value
+ANSWER=54629357b78c9bbde5e3d854dce5be1538abb5ed3027d36a9d39a1189167bc95
+MODE=digits
+BRIEFING=goal
+TEACHES=break LOCATION if COND:stop only when the condition is true|condition N EXPR:add or change a condition on breakpoint N
+HINT1=The loop runs 5000 times. A plain breakpoint would stop on every one of them.|A breakpoint can carry a condition.
+HINT2=`break main.c:14 if id == 4217` stops on the one iteration you care about.
+HINT3=It stops *before* line 14 runs, so `next` once to perform the assignment, then `print value`.

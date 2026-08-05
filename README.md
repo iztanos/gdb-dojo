@@ -115,15 +115,15 @@ it never goes stale:
 ```console
 dojo:/dojo$ dojo list
 
-Done  Exercise                     Skill
-[x]   00  Build and Run            Compile a C program and run it.
-[x]   01  Run in GDB               Start GDB, run a program, and quit.
-[x]   02  First Breakpoint         Set a breakpoint at main and continue.
-[ ]   03  Inspect Local Variables  Inspect variables the program never prints.
-[ ]   04  Step Into Functions      Use step and finish to follow a helper.
-[ ]   05  Basics Capstone          Combine break, run, step, finish, print.
+Done  Level        Exercise                  Path
+[x]   Basics       00  Build and Run         levels/guided/00-basics/00-build-and-run
+[x]   Basics       01  Run in GDB            levels/guided/00-basics/01-run-in-gdb
+[x]   Basics       02  First Breakpoint      levels/guided/00-basics/02-first-breakpoint
+[ ]   Basics       03  Inspect Locals        levels/guided/00-basics/03-inspect-locals
+[ ]   Breakpoints  01  Conditional Break     levels/guided/01-breakpoints/01-conditional-breakpoint
+[ ]   Breakpoints  03  Watchpoints           levels/guided/01-breakpoints/03-watchpoints
 
-Progress  [############............] 3 of 6
+Progress  [######..................] 3 of 11
 ```
 
 **You build your own reference.** `dojo cheatsheet` lists only what you earned:
@@ -169,7 +169,7 @@ leave them alone.
 | Intermediate | Realistic debugging tasks | Planned |
 | Advanced | Harder debugging scenarios | Planned |
 
-### Guided Path → 00 Basics
+### 00 – Basics
 
 | # | Exercise | Skill |
 |:--|:--|:--|
@@ -183,7 +183,20 @@ leave them alone.
 Exercises **00–02 walk you through the commands** — the mechanics are the point.
 **03 onward gives you the goal only** and expects you to reach for the debugger.
 
-Next up: **01 – Breakpoints** — conditional and line breakpoints, `tbreak`, `watch`.
+### 01 – Breakpoints
+
+Stopping exactly where and when you want, in programs where continuing by hand
+is not viable.
+
+| # | Exercise | Skill |
+|:--|:--|:--|
+| 00 | `break-on-a-line` | `break FILE:LINE`, `info breakpoints` |
+| 01 | `conditional-breakpoint` | `break ... if COND` — one iteration out of 5000 |
+| 02 | `ignore-counts` | `ignore N COUNT`, `finish` |
+| 03 | `watchpoints` | `watch` — stop on data, not on code |
+| 04 | `breakpoints-capstone` | conditions plus `finish` |
+
+Next up: **02 – Memory** — pointers, arrays, and examining raw memory.
 
 <a id="contributing"></a>
 

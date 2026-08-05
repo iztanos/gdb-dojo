@@ -1,0 +1,15 @@
+TRACK=Guided Path
+LEVEL=Breakpoints
+NUMBER=03
+TITLE=Watchpoints
+SKILL=Stop when a variable is written, rather than at a code location.
+GOAL=Report the value access_level holds immediately after the first write to it.
+SUBMIT=ACCESS_LEVEL
+GDB=watch access_level|run|continue
+ANSWER=73475cb40a568e8da8a045ced110137e159f890ac4da883b6b17dc651b3a8049
+MODE=digits
+BRIEFING=goal
+TEACHES=watch EXPR:stop whenever EXPR is written|info watchpoints:list active watchpoints
+HINT1=You do not know which function writes it, so a breakpoint on a location is the wrong tool.|Ask GDB to watch the variable itself.
+HINT2=`watch access_level` before `run`. GDB stops on each write and prints the old and new values.
+HINT3=The first stop is the one you want. Read the `New value` GDB reports; do not continue past it.

@@ -1,0 +1,15 @@
+TRACK=Guided Path
+LEVEL=Breakpoints
+NUMBER=04
+TITLE=Breakpoints Capstone
+SKILL=Combine conditional breakpoints with finish to read a running total.
+GOAL=Report total_manifest immediately after crate 777 has been loaded.
+SUBMIT=TOTAL
+GDB=break load_crate if crate == 777|run|finish|print total_manifest
+ANSWER=be24f2ea8677f44f1950ef96a2d80a0a9da7e3e1bc40443d4beb500361c65cfa
+MODE=digits
+BRIEFING=goal
+TEACHES=
+HINT1=1200 crates, and you want the total after exactly one of them.|Stop only for that crate.
+HINT2=`break load_crate if crate == 777` then `run`.
+HINT3=Stopping at the top of load_crate is too early: the crate has not been added yet.|`finish` lets it complete, then `print total_manifest`.
