@@ -1,0 +1,30 @@
+{
+  "name": "GDB Dojo",
+  "build": {
+    "dockerfile": "../docker/Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/dojo",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/dojo,type=bind",
+  "remoteUser": "dojo",
+  "overrideCommand": true,
+  "runArgs": [
+    "--cap-add=SYS_PTRACE",
+    "--security-opt", "seccomp=unconfined"
+  ],
+  "mounts": [
+    "source=gdb-dojo-state,target=/home/dojo/.local/share,type=volume"
+  ],
+  "postAttachCommand": "./dojo next",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-vscode.cpptools"],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "dojo",
+        "terminal.integrated.profiles.linux": {
+          "dojo": { "path": "bash", "args": ["--rcfile", "/dojo/.bashrc.dojo"] }
+        }
+      }
+    }
+  }
+}

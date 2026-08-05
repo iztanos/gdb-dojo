@@ -6,5 +6,5 @@ r="$d"; while [ ! -f "$r/dojo" ] && [ "$r" != "/" ]; do r="$(dirname "$r")"; don
 # shellcheck source=/dev/null
 . "$r/lib/dojo-ui.sh"; . "$r/lib/dojo-paths.sh"
 # shellcheck source=/dev/null
-. "$r/lib/dojo-progress.sh"; . "$r/lib/dojo-hints.sh"; . "$r/lib/dojo-check.sh"
+. "$r/lib/dojo-state.sh"; . "$r/lib/dojo-progress.sh"; . "$r/lib/dojo-hints.sh"; . "$r/lib/dojo-check.sh"
 dojo_check_exercise "$d" "$@"

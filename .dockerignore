@@ -1,0 +1,8 @@
+.git
+.github
+.devcontainer
+.dojo
+tests
+*.md
+!levels/**/*.md
+!playground/*.md

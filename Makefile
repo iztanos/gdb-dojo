@@ -17,7 +17,9 @@ clean:
 	@$(MAKE) -s -C playground clean
 
 reset-progress:
-	rm -rf .dojo
+	@rm -rf .dojo
+	@rm -rf "$${DOJO_STATE_DIR:-$${XDG_DATA_HOME:-$$HOME/.local/share}/gdb-dojo}"
+	@echo "progress cleared"
 
 # Deprecated: kept so older docs and habits keep working.
 clean-guided-basics: clean

@@ -25,6 +25,8 @@ fi
 . "$repo_dir/lib/dojo-ui.sh"
 # shellcheck source=lib/dojo-paths.sh
 . "$repo_dir/lib/dojo-paths.sh"
+# shellcheck source=lib/dojo-state.sh
+. "$repo_dir/lib/dojo-state.sh"
 # shellcheck source=lib/dojo-progress.sh
 . "$repo_dir/lib/dojo-progress.sh"
 # shellcheck source=lib/dojo-hints.sh

@@ -20,17 +20,27 @@ It provides:
 
 ## Start
 
-Windows:
-
-```powershell
-.\start-dojo.bat
-```
-
-macOS/Linux:
+**Fastest — no clone, no build:**
 
 ```bash
-./start-dojo.sh
+docker run --rm -it -p 127.0.0.1:7681:7681 \
+  --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
+  -v gdb-dojo-state:/home/dojo/.local/share \
+  ghcr.io/iztanos/gdb-dojo
 ```
+
+Then open <http://localhost:7681>. The named volume keeps your progress
+between runs.
+
+**In the browser, nothing to install:** open the repo in GitHub Codespaces.
+The devcontainer builds the same image and drops you straight into the dojo.
+
+**From a clone**, if you want to edit exercises:
+
+| Platform | Command |
+|---|---|
+| Windows | `.\start-dojo.bat` |
+| macOS / Linux | `./start-dojo.sh` |
 
 For full setup instructions, see [docs/SETUP.md](docs/SETUP.md).
 

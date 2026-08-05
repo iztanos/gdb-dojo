@@ -27,6 +27,15 @@ cd "$repo_dir" || exit 1
 
 filter="${1:-}"
 
+# Run against a throwaway state directory. Before this the suite deleted
+# .dojo/ in the repo, which destroyed real progress; now that state lives
+# under $HOME by default, clobbering it would be worse.
+DOJO_STATE_DIR="$(mktemp -d)"
+export DOJO_STATE_DIR
+trap 'rm -rf "$DOJO_STATE_DIR"' EXIT
+
+reset_state() { rm -rf "${DOJO_STATE_DIR:?}"; mkdir -p "$DOJO_STATE_DIR"; }
+
 pass_count=0
 fail_count=0
 skip_count=0
@@ -209,7 +218,7 @@ test_exercise() {
             fi
 
             # A wrong answer must reveal exactly one more hint.
-            rm -rf .dojo
+            reset_state
             (cd "$dir" && ./check.sh __WRONG__ >/dev/null 2>&1) || true
             local shown
             shown="$(hint_count_for "$dir")"
@@ -225,7 +234,7 @@ test_exercise() {
             else
                 bad "hints escalate on repeated wrong answers" "hint counter was '${shown:-unset}'"
             fi
-            rm -rf .dojo
+            reset_state
         else
             bad "check.sh accepts solved answer" "solution produced '$answer', rejected by check.sh"
         fi
@@ -240,8 +249,8 @@ dojo_first_exercise() { printf '%s' "${exercises[0]}"; }
 
 # Revealed-hint counter for an exercise, or 0 when nothing is recorded.
 hint_count_for() {
-    [ -f .dojo/hints ] || { printf '0'; return; }
-    awk -F'\t' -v d="$1" '$1 == d { n = $2 } END { print (n == "" ? 0 : n) }' .dojo/hints
+    [ -f "$DOJO_STATE_DIR/hints" ] || { printf '0'; return; }
+    awk -F'\t' -v d="$1" '$1 == d { n = $2 } END { print (n == "" ? 0 : n) }' "$DOJO_STATE_DIR/hints"
 }
 
 test_repo() {
@@ -283,7 +292,7 @@ test_repo() {
         # makes grep exit on first match, and the resulting SIGPIPE would be
         # reported as a pipeline failure under `set -o pipefail`.
         local out
-        rm -rf .dojo
+        reset_state
         out="$(NO_COLOR=1 ./dojo next 2>/dev/null)"
         if printf '%s' "$out" | grep -qF "$first"; then
             ok "dojo next points at the first unfinished exercise"
@@ -291,7 +300,7 @@ test_repo() {
             bad "dojo next points at the first unfinished exercise"
         fi
 
-        mkdir -p .dojo && printf '%s\n' "$first" > .dojo/progress
+        reset_state && printf '%s\n' "$first" > "$DOJO_STATE_DIR/progress"
         out="$(NO_COLOR=1 ./dojo next 2>/dev/null)"
         if printf '%s' "$out" | grep -qF "$first"; then
             bad "dojo next skips a completed exercise" "still points at $first"
@@ -318,14 +327,14 @@ test_repo() {
             ok "dojo show rejects an unknown exercise"
         fi
         # cheatsheet only lists commands from completed exercises
-        rm -rf .dojo
+        reset_state
         out="$(NO_COLOR=1 ./dojo cheatsheet 2>/dev/null)"
         if printf '%s' "$out" | grep -q 'Nothing unlocked yet'; then
             ok "cheatsheet is empty before any exercise is done"
         else
             bad "cheatsheet is empty before any exercise is done"
         fi
-        mkdir -p .dojo && printf '%s\n' "$first" > .dojo/progress
+        reset_state && printf '%s\n' "$first" > "$DOJO_STATE_DIR/progress"
         out="$(NO_COLOR=1 ./dojo cheatsheet 2>/dev/null)"
         if printf '%s' "$out" | grep -q 'Nothing unlocked yet'; then
             bad "cheatsheet lists commands after completion"
@@ -342,15 +351,30 @@ test_repo() {
 
         # Regression: the CLI cd's to the repo root, so it must remember where
         # it was invoked from or `dojo hint` inside an exercise finds nothing.
-        rm -rf .dojo
+        reset_state
         out="$(cd "$first" && NO_COLOR=1 "$repo_dir/dojo" hint 2>/dev/null || true)"
         if printf '%s' "$out" | grep -q 'Hint 1 of'; then
             ok "dojo hint works from inside an exercise directory"
         else
             bad "dojo hint works from inside an exercise directory" "needs no argument when cwd is an exercise"
         fi
-        rm -rf .dojo
+        reset_state
     fi
+
+    # state must stay out of the checkout
+    reset_state
+    (cd "${exercises[0]}" && ./check.sh __WRONG__ >/dev/null 2>&1) || true
+    if [ -e .dojo ]; then
+        bad "learner state stays out of the repo" ".dojo/ was created in the checkout"
+    else
+        ok "learner state stays out of the repo"
+    fi
+    if [ -s "$DOJO_STATE_DIR/hints" ]; then
+        ok "state is written to DOJO_STATE_DIR"
+    else
+        bad "state is written to DOJO_STATE_DIR" "nothing landed in $DOJO_STATE_DIR"
+    fi
+    reset_state
 
     # shell scripts must pass shellcheck when it is available
     if command -v shellcheck >/dev/null 2>&1; then

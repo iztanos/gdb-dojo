@@ -7,12 +7,12 @@
 # because a submitted answer was wrong or because the learner asked with
 # `dojo hint`.
 #
-# The reveal count lives in .dojo/hints so that a learner who steps away does
-# not lose their place, and so an exercise never dumps its full solution the
-# moment someone guesses once.
+# The reveal count lives in the learner state directory so that someone who
+# steps away does not lose their place, and so an exercise never dumps its full
+# solution the moment someone guesses once.
 
 dojo_hints_file() {
-    printf '%s/.dojo/hints' "${1:-$(dojo_find_root)}"
+    dojo_state_file hints "${1:-$(dojo_find_root)}"
 }
 
 # Total hints defined for an exercise.
