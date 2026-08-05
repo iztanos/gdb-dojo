@@ -1,15 +1,10 @@
 #!/usr/bin/env bash
+# Thin stub: the expected answer lives as a SHA-256 hash in `meta`.
 set -e
-
-script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-repo_dir="$(cd "$script_dir/../../../.." && pwd)"
-. "$repo_dir/lib/dojo-ui.sh"
-. "$repo_dir/lib/dojo-check.sh"
-
-dojo_require_answer $#
-
-dojo_check "d80ffc8dc07953482a2f9f5fbff9a9cecea5d0022155f32af0b56e91d1bee7d3" \
-    "$1" \
-    "upper" \
-    "run" \
-    "quit"
+d="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+r="$d"; while [ ! -f "$r/dojo" ] && [ "$r" != "/" ]; do r="$(dirname "$r")"; done
+# shellcheck source=/dev/null
+. "$r/lib/dojo-ui.sh"; . "$r/lib/dojo-paths.sh"
+# shellcheck source=/dev/null
+. "$r/lib/dojo-progress.sh"; . "$r/lib/dojo-check.sh"
+dojo_check_exercise "$d" "$@"

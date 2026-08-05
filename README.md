@@ -37,18 +37,22 @@ For full setup instructions, see [docs/SETUP.md](docs/SETUP.md).
 Inside the browser terminal:
 
 ```bash
-dojo
-dojo paths
+dojo doctor   # confirm gcc, gdb, and make work
+dojo next     # go to the next unfinished exercise
+dojo list     # every exercise and what you have completed
 ```
 
-## Modes
+## Tracks
 
-| Mode | Best for | Status |
+| Track | Best for | Status |
 |---|---|---|
 | Guided Path | First-time GDB users | Available |
 | Beginner | Standalone skill drills | Planned |
 | Intermediate | Realistic debugging tasks | Planned |
 | Advanced | Harder debugging scenarios | Planned |
+
+Run `dojo tracks` for live counts. Every listing in the CLI is generated from
+the filesystem, so it never goes stale.
 
 ## Guided Path
 
@@ -58,15 +62,21 @@ dojo paths
 
 ## First exercise
 
-```text
-levels/guided/00-basics/00-build-and-run
+```bash
+dojo next
 ```
 
-Inside the exercise directory:
+That prints the next exercise you have not finished. Inside the exercise
+directory:
 
 ```bash
-start
+start        # briefing
+make         # build
+./check.sh ANSWER
 ```
+
+Progress is stored locally in `.dojo/` and is never committed. Clear it with
+`make reset-progress`.
 
 ## Contributing
 

@@ -28,6 +28,7 @@ break main
 run
 step
 finish
+next
 print result
 quit
 ```

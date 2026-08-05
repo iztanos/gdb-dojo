@@ -24,14 +24,10 @@ gdb -q ./basics-capstone
 Inside GDB:
 
 ```gdb
-break main
+break build_final_value
 run
-next
-step
 finish
-next
 print final_value
-continue
 quit
 ```
 

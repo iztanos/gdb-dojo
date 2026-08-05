@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 #
-# Shared answer-checking helpers for exercise check.sh scripts.
+# Answer checking.
 #
-# Expected answers are stored as SHA-256 hashes so that reading check.sh does
-# not reveal the answer. Exercises call dojo_check with the hash of the
-# normalized answer.
+# Expected answers are stored as SHA-256 hashes in each exercise `meta` file so
+# that reading the exercise directory does not reveal the answer.
 #
 # Normalization modes:
-#   upper   strip all whitespace, uppercase   (default; for word answers)
-#   exact   strip all whitespace only         (for case-sensitive answers)
-#   digits  strip all whitespace              (for numeric answers)
+#   upper   strip whitespace, uppercase   (default; word answers)
+#   digits  strip whitespace              (numeric answers)
+#   exact   strip whitespace              (case-sensitive answers)
 
 dojo_sha256() {
     if command -v sha256sum >/dev/null 2>&1; then
@@ -25,68 +24,80 @@ dojo_sha256() {
 }
 
 dojo_normalize() {
-    _value="$1"
-    _mode="${2:-upper}"
-
-    _value=$(printf '%s' "$_value" | tr -d '[:space:]')
-
-    case "$_mode" in
-        upper)
-            printf '%s' "$_value" | tr '[:lower:]' '[:upper:]'
-            ;;
-        exact | digits)
-            printf '%s' "$_value"
-            ;;
-        *)
-            echo "dojo: unknown normalization mode: $_mode" >&2
-            return 1
-            ;;
+    _value="$(printf '%s' "$1" | tr -d '[:space:]')"
+    case "${2:-upper}" in
+        upper)          printf '%s' "$_value" | tr '[:lower:]' '[:upper:]' ;;
+        exact | digits) printf '%s' "$_value" ;;
+        *)              echo "dojo: unknown normalization mode: $2" >&2; return 1 ;;
     esac
 }
 
-# dojo_check <expected_sha256> <submitted> [mode] [hint...]
+# dojo_check_exercise <exercise-dir> [submitted-answer]
 #
-# Prints the standard correct/incorrect UI and returns 0 on a match, 1 otherwise.
-dojo_check() {
-    _expected="$1"
-    _submitted="$2"
-    _mode="${3:-upper}"
-    shift 3 2>/dev/null || shift $#
+# Reads ANSWER / MODE / HINTS from the exercise `meta` file, compares, prints
+# the result, and records completion on success.
+dojo_check_exercise() {
+    _dir="$(cd "$1" && pwd)"
+    shift
 
-    _normalized=$(dojo_normalize "$_submitted" "$_mode") || return 1
-    _actual=$(dojo_sha256 "$_normalized") || return 1
+    _root="$(dojo_find_root "$_dir")" || return 1
+    _rel="${_dir#"$_root"/}"
+
+    if [ "$#" -lt 1 ] || [ -z "${1:-}" ]; then
+        dojo_clear
+        dojo_error "Usage:"
+        echo "  ./check.sh ANSWER"
+        echo
+        echo "Re-read the briefing with:"
+        dojo_cmd "start"
+        return 1
+    fi
+
+    _expected="$(dojo_meta "$_rel" ANSWER "$_root")"
+    if [ -z "$_expected" ]; then
+        dojo_error "This exercise has no ANSWER recorded in its meta file."
+        return 1
+    fi
+    _mode="$(dojo_meta "$_rel" MODE "$_root")"
+    _mode="${_mode:-upper}"
+
+    _normalized="$(dojo_normalize "$1" "$_mode")" || return 1
+    _actual="$(dojo_sha256 "$_normalized")" || return 1
 
     dojo_clear
 
     if [ "$_actual" = "$_expected" ]; then
-        dojo_header "CORRECT"
+        dojo_progress_mark "$_rel" "$_root"
+
+        dojo_header "CORRECT" "$(dojo_meta "$_rel" TITLE "$_root")"
         echo
         dojo_success "Exercise complete."
         echo
-        echo "Next:"
-        dojo_cmd "dojo paths"
+
+        _total="$(dojo_exercises "$_root" | wc -l | tr -d '[:space:]')"
+        _done="$(dojo_exercises "$_root" | dojo_progress_count "$_root")"
+        printf 'Progress  %s of %s\n\n' "$_done" "$_total"
+
+        _next="$(dojo_progress_next "$_root")"
+        if [ -n "$_next" ]; then
+            echo "Next"
+            dojo_cmd "cd $_root/$_next && start"
+        else
+            dojo_success "Every exercise is complete. Well done."
+        fi
         return 0
     fi
 
-    dojo_header "NOT QUITE"
+    dojo_header "NOT QUITE" "$(dojo_meta "$_rel" TITLE "$_root")"
     echo
-    if [ "$#" -gt 0 ]; then
+    _hints="$(dojo_meta "$_rel" HINTS "$_root")"
+    if [ -n "$_hints" ]; then
         dojo_error "Try:"
-        for _hint in "$@"; do
-            dojo_cmd "$_hint"
+        printf '%s' "$_hints" | tr '|' '\n' | while IFS= read -r _h; do
+            [ -n "$_h" ] && dojo_cmd "$_h"
         done
     else
         dojo_error "That is not the expected value."
     fi
     return 1
-}
-
-# dojo_require_answer <argc> — prints usage and exits when no answer was given.
-dojo_require_answer() {
-    if [ "$1" -lt 1 ]; then
-        dojo_clear
-        dojo_error "Usage:"
-        echo "  ./check.sh ANSWER"
-        exit 1
-    fi
 }

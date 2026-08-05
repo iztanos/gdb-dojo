@@ -1,0 +1,11 @@
+TRACK=Guided Path
+LEVEL=Basics
+NUMBER=01
+TITLE=Run in GDB
+SKILL=Start GDB, run a program, and quit.
+GOAL=Run the program from inside GDB and read the reported status.
+SUBMIT=STATUS
+GDB=run|quit
+HINTS=run|quit
+ANSWER=d80ffc8dc07953482a2f9f5fbff9a9cecea5d0022155f32af0b56e91d1bee7d3
+MODE=upper
