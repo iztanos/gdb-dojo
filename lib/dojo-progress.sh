@@ -2,13 +2,12 @@
 #
 # Progress tracking.
 #
-# Completed exercises are recorded one per line in .dojo/progress at the repo
-# root. The directory is gitignored, so progress is local to each learner and
-# never ends up in a commit. `make reset-progress` removes it.
+# Completed exercises are recorded one per line in the learner state directory
+# (see lib/dojo-state.sh), which lives outside the checkout so progress
+# survives re-cloning and never collides with `git pull`.
 
 dojo_progress_file() {
-    _root="${1:-$(dojo_find_root)}"
-    printf '%s/.dojo/progress' "$_root"
+    dojo_state_file progress "${1:-$(dojo_find_root)}"
 }
 
 # dojo_progress_mark <exercise-dir> [root]

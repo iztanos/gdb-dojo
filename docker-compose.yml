@@ -3,11 +3,18 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
+    # Published images avoid a local build: see docs/SETUP.md
+    image: ${DOJO_IMAGE:-gdb-dojo:local}
     container_name: gdb-dojo
     ports:
-      - "7681:7681"
+      # Bound to loopback on purpose. ttyd runs with -W (writable) and no
+      # authentication, so publishing on 0.0.0.0 would expose a shell with
+      # SYS_PTRACE to anyone on the same network.
+      - "127.0.0.1:7681:7681"
     volumes:
       - .:/dojo
+      # Progress and hints live here, so they survive `docker compose down`.
+      - dojo-state:/home/dojo/.local/share
     working_dir: /dojo
     stdin_open: true
     tty: true
@@ -19,3 +26,6 @@ services:
       core:
         soft: -1
         hard: -1
+
+volumes:
+  dojo-state:

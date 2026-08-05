@@ -6,6 +6,30 @@ GDB Dojo is early. The local browser terminal exists, and the Guided Path Basics
 
 Docker is only required for the local browser terminal. Exercises can also be run directly with a local GDB, GCC, and Make setup.
 
+## Option 0: Published Image (No Clone)
+
+Nothing to build and nothing to check out:
+
+```bash
+docker run --rm -it -p 127.0.0.1:7681:7681 \
+  --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
+  -v gdb-dojo-state:/home/dojo/.local/share \
+  ghcr.io/iztanos/gdb-dojo
+```
+
+Open <http://localhost:7681>. The `gdb-dojo-state` volume holds your progress,
+so it survives restarts and image upgrades.
+
+Use this if you only want to work through the exercises. Use a clone if you
+want to edit them or contribute.
+
+## Option 0b: GitHub Codespaces
+
+Open the repository on GitHub, press `.` or use the **Code → Codespaces**
+button. The `.devcontainer/` config builds the same image, so you get a working
+GDB in the browser with no local Docker at all — useful on machines where
+Docker Desktop is unavailable or blocked.
+
 ## Option 1: Local Browser Terminal With Docker
 
 This is the easiest and most consistent setup once Docker is installed. The launcher scripts start Docker Compose and open the browser automatically.
@@ -39,6 +63,9 @@ docker compose up --build
 If the browser does not open automatically, visit:
 
 [http://localhost:7681](http://localhost:7681)
+
+The terminal is published on `127.0.0.1` only. ttyd runs writable and without
+authentication, so it must not be exposed beyond the local machine.
 
 The repo is mounted at `/dojo`. The container includes GDB, GCC, G++, Make, Vim, Nano, binutils, and related tools.
 
@@ -184,6 +211,20 @@ Clear recorded progress:
 ```bash
 make reset-progress
 ```
+
+### Where Progress Is Stored
+
+Progress and revealed hints live outside the checkout, so re-cloning or
+pulling new content never disturbs them:
+
+| Location | When |
+|---|---|
+| `$DOJO_STATE_DIR` | if you set it |
+| `$XDG_DATA_HOME/gdb-dojo` | if `XDG_DATA_HOME` is set |
+| `~/.local/share/gdb-dojo` | default |
+
+In Docker this path is backed by the `dojo-state` volume. An older in-repo
+`.dojo/` directory is migrated automatically the first time you run a command.
 
 ## Troubleshooting
 

@@ -32,6 +32,14 @@ WORKDIR /dojo
 COPY docker/dojo-entrypoint.sh /usr/local/bin/dojo-entrypoint.sh
 RUN chmod +x /usr/local/bin/dojo-entrypoint.sh
 
+# The exercises are baked in so the published image runs with no clone and no
+# bind mount. docker-compose.yml mounts the working copy over this for
+# development; both paths work.
+COPY --chown=dojo:dojo . /dojo
+
+RUN mkdir -p /home/dojo/.local/share/gdb-dojo \
+    && chown -R dojo:dojo /home/dojo/.local
+
 USER dojo
 
 EXPOSE 7681
