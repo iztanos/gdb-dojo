@@ -1,12 +1,23 @@
-.PHONY: reset-progress clean-guided-basics
+# Exercise directories are discovered, not listed, so new exercises are picked
+# up automatically.
+EXERCISE_DIRS := $(patsubst %/Makefile,%,$(shell find levels -name Makefile))
+
+.PHONY: help test clean reset-progress clean-guided-basics
+
+help:
+	@echo "make test             run the test suite"
+	@echo "make clean            remove build outputs from every exercise"
+	@echo "make reset-progress   clear recorded exercise progress"
+
+test:
+	@tests/run-tests.sh
+
+clean:
+	@for dir in $(EXERCISE_DIRS); do $(MAKE) -s -C $$dir clean; done
+	@$(MAKE) -s -C playground clean
 
 reset-progress:
 	rm -rf .dojo
 
-clean-guided-basics:
-	$(MAKE) -C levels/guided/00-basics/00-build-and-run clean
-	$(MAKE) -C levels/guided/00-basics/01-run-in-gdb clean
-	$(MAKE) -C levels/guided/00-basics/02-first-breakpoint clean
-	$(MAKE) -C levels/guided/00-basics/03-inspect-locals clean
-	$(MAKE) -C levels/guided/00-basics/04-step-into-functions clean
-	$(MAKE) -C levels/guided/00-basics/05-basics-capstone clean
+# Deprecated: kept so older docs and habits keep working.
+clean-guided-basics: clean

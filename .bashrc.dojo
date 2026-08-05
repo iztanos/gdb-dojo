@@ -16,11 +16,11 @@ Repository:
 
 Explore:
   dojo
-  dojo paths
+  dojo next
+  dojo doctor
 
-Guided Path:
-  cd levels/guided/00-basics/00-build-and-run
-  start
+Start where you left off:
+  dojo next
 EOF
 
 PS1='dojo:\w$ '

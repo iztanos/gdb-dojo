@@ -1,0 +1,11 @@
+TRACK=Guided Path
+LEVEL=Basics
+NUMBER=00
+TITLE=Build and Run
+SKILL=Compile a C program and run it.
+GOAL=Build the program, run it, and read the reported status.
+SUBMIT=STATUS
+GDB=
+HINTS=make|./build-and-run
+ANSWER=c2e3ac47f4a325469c1a2d5f117e463ec943c721986d5d9f09ac4540b7d80526
+MODE=upper

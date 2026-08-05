@@ -57,7 +57,7 @@ command -v git >/dev/null 2>&1 && have_git=1
 
 # ---------------------------------------------------------------- discovery --
 
-mapfile -t exercises < <(find levels -type f -name check.sh -print0 | xargs -0 -n1 dirname | sort)
+mapfile -t exercises < <(find levels -type f -name meta -print0 | xargs -0 -n1 dirname | LC_ALL=C sort)
 
 if [ "${#exercises[@]}" -eq 0 ]; then
     echo "No exercises found under levels/." >&2
@@ -75,7 +75,7 @@ test_exercise() {
 
     # 1. structure
     local missing=()
-    for f in README.md main.c Makefile check.sh start; do
+    for f in README.md main.c Makefile check.sh start meta; do
         [ -f "$dir/$f" ] || missing+=("$f")
     done
     if [ "${#missing[@]}" -eq 0 ]; then
@@ -83,6 +83,16 @@ test_exercise() {
     else
         bad "required files present" "missing: ${missing[*]}"
         return
+    fi
+
+    local meta_missing=()
+    for key in TRACK TITLE SKILL GOAL ANSWER; do
+        grep -qE "^${key}=." "$dir/meta" || meta_missing+=("$key")
+    done
+    if [ "${#meta_missing[@]}" -eq 0 ]; then
+        ok "meta has required keys"
+    else
+        bad "meta has required keys" "missing: ${meta_missing[*]}"
     fi
 
     for f in check.sh start; do
@@ -182,6 +192,8 @@ test_exercise() {
 
 # ------------------------------------------------------------------ repo -----
 
+dojo_first_exercise() { printf '%s' "${exercises[0]}"; }
+
 test_repo() {
     printf '\n%srepository%s\n' "$C_BOLD" "$C_RESET"
 
@@ -199,7 +211,7 @@ test_repo() {
     fi
 
     # dojo subcommands must not error
-    for sub in help modes guided basics paths; do
+    for sub in help next list tracks paths doctor; do
         if NO_COLOR=1 ./dojo "$sub" >/dev/null 2>&1; then
             ok "dojo $sub exits 0"
         else
@@ -211,6 +223,51 @@ test_repo() {
         bad "dojo rejects unknown command" "expected non-zero exit"
     else
         ok "dojo rejects unknown command"
+    fi
+
+    # progress tracking round-trip
+    local first
+    first="$(dojo_first_exercise)"
+    if [ -n "$first" ]; then
+        # Output is captured before matching: piping straight into `grep -q`
+        # makes grep exit on first match, and the resulting SIGPIPE would be
+        # reported as a pipeline failure under `set -o pipefail`.
+        local out
+        rm -rf .dojo
+        out="$(NO_COLOR=1 ./dojo next 2>/dev/null)"
+        if printf '%s' "$out" | grep -qF "$first"; then
+            ok "dojo next points at the first unfinished exercise"
+        else
+            bad "dojo next points at the first unfinished exercise"
+        fi
+
+        mkdir -p .dojo && printf '%s\n' "$first" > .dojo/progress
+        out="$(NO_COLOR=1 ./dojo next 2>/dev/null)"
+        if printf '%s' "$out" | grep -qF "$first"; then
+            bad "dojo next skips a completed exercise" "still points at $first"
+        else
+            ok "dojo next skips a completed exercise"
+        fi
+
+        out="$(NO_COLOR=1 ./dojo list 2>/dev/null)"
+        if printf '%s' "$out" | grep -F "$first" | grep -q '\[x\]'; then
+            ok "dojo list marks completed exercises"
+        else
+            bad "dojo list marks completed exercises"
+        fi
+
+        out="$(NO_COLOR=1 ./dojo show 00-build 2>/dev/null || true)"
+        if printf '%s' "$out" | grep -q 'Skill'; then
+            ok "dojo show renders an exercise"
+        else
+            bad "dojo show renders an exercise"
+        fi
+        if NO_COLOR=1 ./dojo show definitely-no-such-exercise >/dev/null 2>&1; then
+            bad "dojo show rejects an unknown exercise" "expected non-zero exit"
+        else
+            ok "dojo show rejects an unknown exercise"
+        fi
+        rm -rf .dojo
     fi
 
     # shell scripts must pass shellcheck when it is available

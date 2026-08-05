@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
-# Shared terminal UI helpers. Sourced by ./dojo, every exercise `start`, and
-# every exercise check.sh.
+# Shared terminal UI helpers. Sourced by ./dojo, lib/dojo-start.sh, and every
+# exercise check.sh.
 
 # The color variables below are consumed by the scripts that source this file,
 # which shellcheck cannot see from here.
@@ -29,9 +29,7 @@ else
     RED=''
 fi
 
-dojo_hr() {
-    echo "------------------------------------------------------------"
-}
+DOJO_WIDTH=60
 
 dojo_clear() {
     if [ -t 1 ]; then
@@ -39,16 +37,26 @@ dojo_clear() {
     fi
 }
 
-dojo_header() {
-    title="$1"
-    subtitle="${2:-}"
+dojo_rule() {
+    printf '%b%s%b\n' "$DIM" "$(printf '%*s' "$DOJO_WIDTH" '' | tr ' ' '-')" "$RESET"
+}
 
-    printf "%b+------------------------------------------------------------+%b\n" "$CYAN" "$RESET"
-    printf "%b| %-58s |%b\n" "$CYAN" "$title" "$RESET"
-    if [ -n "$subtitle" ]; then
-        printf "%b| %-58s |%b\n" "$CYAN" "$subtitle" "$RESET"
+dojo_header() {
+    _title="$1"
+    _subtitle="${2:-}"
+    _inner=$((DOJO_WIDTH - 2))
+    _bar="$(printf '%*s' "$_inner" '' | tr ' ' '-')"
+
+    printf "%b+%s+%b\n" "$CYAN" "$_bar" "$RESET"
+    printf "%b| %-*s |%b\n" "$CYAN" "$((_inner - 2))" "$_title" "$RESET"
+    if [ -n "$_subtitle" ]; then
+        printf "%b| %-*s |%b\n" "$CYAN" "$((_inner - 2))" "$_subtitle" "$RESET"
     fi
-    printf "%b+------------------------------------------------------------+%b\n" "$CYAN" "$RESET"
+    printf "%b+%s+%b\n" "$CYAN" "$_bar" "$RESET"
+}
+
+dojo_section() {
+    printf '%b%s%b\n' "$BOLD$CYAN" "$1" "$RESET"
 }
 
 dojo_cmd() {
@@ -63,17 +71,34 @@ dojo_error() {
     printf "%b%s%b\n" "$RED" "$1" "$RESET"
 }
 
-dojo_print_file_list() {
-    cat <<'EOF'
-  README.md   full written instructions
-  main.c      source code
-  Makefile    build rules
-  check.sh    answer checker
-  start       this briefing
-EOF
+dojo_warn() {
+    printf "%b%s%b\n" "$YELLOW" "$1" "$RESET"
 }
 
-dojo_print_header() { dojo_header "$@"; }
-dojo_print_command() { dojo_cmd "$@"; }
-dojo_print_success() { dojo_success "$@"; }
-dojo_print_error() { dojo_error "$@"; }
+dojo_dim() {
+    printf "%b%s%b\n" "$DIM" "$1" "$RESET"
+}
+
+# Render a table from tab-separated rows on stdin, sizing every column to its
+# widest cell. Replaces the hand-counted printf widths that misaligned as soon
+# as an exercise name grew.
+#
+#   printf 'A\tB\n1\t2\n' | dojo_table
+dojo_table() {
+    awk -F'\t' -v bold="$BOLD" -v dim="$DIM" -v reset="$RESET" '
+        { for (i = 1; i <= NF; i++) { cell[NR, i] = $i;
+              if (length($i) > w[i]) w[i] = length($i) }
+          if (NF > maxf) maxf = NF; rows = NR }
+        END {
+            for (r = 1; r <= rows; r++) {
+                line = ""
+                for (i = 1; i <= maxf; i++) {
+                    pad = w[i] - length(cell[r, i])
+                    line = line cell[r, i]
+                    if (i < maxf) { line = line sprintf("%*s", pad + 2, "") }
+                }
+                if (r == 1) printf "%s%s%s\n", bold, line, reset
+                else        printf "%s\n", line
+            }
+        }'
+}

@@ -46,8 +46,9 @@ Use the helper to explore:
 
 ```bash
 dojo
-dojo paths
-dojo basics
+dojo next
+dojo list
+dojo doctor
 ```
 
 Try the first Guided Path exercise:
@@ -66,6 +67,12 @@ docker compose down
 ```
 
 ## Terminal Shortcuts
+
+Check that the toolchain works:
+
+```bash
+dojo doctor
+```
 
 ```text
 ll          list files
@@ -166,10 +173,16 @@ Restore a changed exercise:
 git restore levels/guided/00-basics/03-inspect-locals
 ```
 
-Clean Basics build outputs:
+Clean build outputs from every exercise:
 
 ```bash
-make clean-guided-basics
+make clean
+```
+
+Clear recorded progress:
+
+```bash
+make reset-progress
 ```
 
 ## Troubleshooting

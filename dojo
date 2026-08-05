@@ -1,108 +1,210 @@
 #!/usr/bin/env bash
-set -e
+#
+# GDB Dojo command line helper.
+#
+# Every listing is derived from the filesystem: an exercise is any directory
+# under levels/ containing a `meta` file. Adding an exercise requires no edits
+# to this script.
+
+set -euo pipefail
 
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$repo_dir"
 
+# shellcheck source=lib/dojo-ui.sh
 . "$repo_dir/lib/dojo-ui.sh"
+# shellcheck source=lib/dojo-paths.sh
+. "$repo_dir/lib/dojo-paths.sh"
+# shellcheck source=lib/dojo-progress.sh
+. "$repo_dir/lib/dojo-progress.sh"
 
-print_help() {
+total_count() { dojo_exercises "$repo_dir" | wc -l | tr -d '[:space:]'; }
+done_count()  { dojo_exercises "$repo_dir" | dojo_progress_count "$repo_dir"; }
+
+print_progress_line() {
+    printf '%bProgress%b  %s of %s complete\n' "$BOLD" "$RESET" "$(done_count)" "$(total_count)"
+}
+
+cmd_help() {
     dojo_clear
     dojo_header "GDB DOJO" "Practical GDB training"
     echo
-    printf "%bRepository map%b\n" "$BOLD$CYAN" "$RESET"
-    echo "  levels/guided/00-basics"
-    echo "  levels/beginner"
-    echo "  levels/intermediate"
-    echo "  levels/advanced"
+    print_progress_line
     echo
-    printf "%bTypical flow%b\n" "$BOLD$CYAN" "$RESET"
-    dojo_cmd "cd levels/guided/00-basics/00-build-and-run"
+
+    dojo_section "Commands"
+    {
+        printf 'dojo next\tshow the next unfinished exercise\n'
+        printf 'dojo list\tevery exercise with completion state\n'
+        printf 'dojo tracks\ttracks and how far along each one is\n'
+        printf 'dojo paths\tbare exercise paths\n'
+        printf 'dojo show <name>\tdetails for one exercise\n'
+        printf 'dojo doctor\tcheck that the toolchain works\n'
+        printf 'dojo help\tthis message\n'
+    } | dojo_table
+    echo
+
+    dojo_section "Typical flow"
+    dojo_cmd "dojo next"
+    dojo_cmd "cd <exercise directory>"
     dojo_cmd "start"
     dojo_cmd "make"
-    dojo_cmd "./build-and-run"
-    echo
-    echo "Commands:"
-    echo "  dojo paths"
-    echo "  dojo guided"
-    echo "  dojo basics"
-    echo "  dojo modes"
-    echo "  dojo help"
+    dojo_cmd "./check.sh ANSWER"
 }
 
-show_modes() {
+cmd_tracks() {
     dojo_clear
-    printf "%bModes%b\n\n" "$BOLD$CYAN" "$RESET"
-    printf "%-14s  %-9s  %s\n" "Mode" "Status" "Best for"
-    printf "%-14s  %-9s  %s\n" "--------------" "---------" "--------------------------------"
-    printf "%-14s  %-9s  %s\n" "Guided Path" "available" "first-time GDB users"
-    printf "%-14s  %-9s  %s\n" "Beginner" "planned" "standalone skill drills"
-    printf "%-14s  %-9s  %s\n" "Intermediate" "planned" "realistic debugging tasks"
-    printf "%-14s  %-9s  %s\n" "Advanced" "planned" "harder scenarios"
+    dojo_header "TRACKS"
+    echo
+    {
+        printf 'Track\tExercises\tComplete\n'
+        for track_dir in levels/*/; do
+            track="$(basename "$track_dir")"
+            list="$(dojo_exercises_in "$track" "$repo_dir")"
+            if [ -z "$list" ]; then
+                printf '%s\t0\t-\n' "$track"
+            else
+                n="$(printf '%s\n' "$list" | wc -l | tr -d '[:space:]')"
+                d="$(printf '%s\n' "$list" | dojo_progress_count "$repo_dir")"
+                printf '%s\t%s\t%s of %s\n' "$track" "$n" "$d" "$n"
+            fi
+        done
+    } | dojo_table
+    echo
+    dojo_dim "Tracks with 0 exercises have no content yet."
 }
 
-show_guided() {
+cmd_list() {
     dojo_clear
-    printf "%bGuided Path%b\n\n" "$BOLD$CYAN" "$RESET"
-    printf "%-10s  %-8s  %s\n" "Level" "Status" "Focus"
-    printf "%-10s  %-8s  %s\n" "----------" "--------" "-----------------------------------"
-    printf "%-10s  %-8s  %s\n" "00-basics" "complete" "core GDB workflow"
-    printf "%-10s  %-8s  %s\n" "01" "planned" "breakpoint control"
+    dojo_header "EXERCISES"
+    echo
+    {
+        printf 'Done\tExercise\tSkill\tPath\n'
+        while IFS= read -r ex; do
+            [ -n "$ex" ] || continue
+            printf '%s\t%s\t%s\t%s\n' \
+                "$(dojo_progress_mark_for "$ex" "$repo_dir")" \
+                "$(dojo_label "$ex" "$repo_dir")" \
+                "$(dojo_meta "$ex" SKILL "$repo_dir")" \
+                "$ex"
+        done < <(dojo_exercises "$repo_dir")
+    } | dojo_table
+    echo
+    print_progress_line
 }
 
-show_basics() {
+cmd_paths() {
+    dojo_exercises "$repo_dir"
+}
+
+cmd_next() {
     dojo_clear
-    dojo_header "GUIDED PATH / BASICS" "Core GDB workflow"
+    next="$(dojo_progress_next "$repo_dir")"
+
+    if [ -z "$next" ]; then
+        dojo_header "ALL COMPLETE"
+        echo
+        dojo_success "Every exercise in the repository is finished."
+        echo
+        echo "Start over with:"
+        dojo_cmd "make reset-progress"
+        return 0
+    fi
+
+    dojo_header "NEXT EXERCISE" "$(dojo_label "$next" "$repo_dir")"
     echo
-    printf "%-24s  %-28s  %s\n" "Exercise" "Skill" "Path"
-    printf "%-24s  %-28s  %s\n" "------------------------" "----------------------------" "---------------------------------------------"
-    printf "%-24s  %-28s  %s\n" "00-build-and-run" "build and run" "levels/guided/00-basics/00-build-and-run"
-    printf "%-24s  %-28s  %s\n" "01-run-in-gdb" "run inside GDB" "levels/guided/00-basics/01-run-in-gdb"
-    printf "%-24s  %-28s  %s\n" "02-first-breakpoint" "break at main, continue" "levels/guided/00-basics/02-first-breakpoint"
-    printf "%-24s  %-28s  %s\n" "03-inspect-locals" "info locals, print" "levels/guided/00-basics/03-inspect-locals"
-    printf "%-24s  %-28s  %s\n" "04-step-into-functions" "step, finish" "levels/guided/00-basics/04-step-into-functions"
-    printf "%-24s  %-28s  %s\n" "05-basics-capstone" "combined workflow" "levels/guided/00-basics/05-basics-capstone"
+    printf 'Skill\n  %s\n\n' "$(dojo_meta "$next" SKILL "$repo_dir")"
+    echo "Go there"
+    dojo_cmd "cd $next"
+    dojo_cmd "start"
     echo
-    printf "%bUse:%b\n" "$GREEN" "$RESET"
-    dojo_cmd "cd levels/guided/00-basics/00-build-and-run"
+    print_progress_line
+}
+
+cmd_show() {
+    if [ "$#" -lt 1 ]; then
+        dojo_error "Usage: dojo show <exercise-name>"
+        return 1
+    fi
+    query="$1"
+    match="$(dojo_exercises "$repo_dir" | grep -- "$query" || true)"
+
+    if [ -z "$match" ]; then
+        dojo_error "No exercise matches: $query"
+        echo
+        echo "See all of them with:"
+        dojo_cmd "dojo list"
+        return 1
+    fi
+    if [ "$(printf '%s\n' "$match" | wc -l | tr -d '[:space:]')" -gt 1 ]; then
+        dojo_error "That matches more than one exercise:"
+        printf '%s\n' "$match" | while IFS= read -r m; do dojo_cmd "$m"; done
+        return 1
+    fi
+
+    status="not started"
+    dojo_progress_done "$match" "$repo_dir" && status="complete"
+
+    dojo_clear
+    dojo_header "$(dojo_meta "$match" TRACK "$repo_dir" | tr '[:lower:]' '[:upper:]')" \
+                "$(dojo_label "$match" "$repo_dir")"
+    echo
+    printf 'Skill\n  %s\n\n' "$(dojo_meta "$match" SKILL "$repo_dir")"
+    printf 'Goal\n  %s\n\n' "$(dojo_meta "$match" GOAL "$repo_dir")"
+    printf 'Status\n  %s\n\n' "$status"
+    echo "Go there"
+    dojo_cmd "cd $match"
     dojo_cmd "start"
 }
 
-show_paths() {
+cmd_doctor() {
     dojo_clear
-    printf "%bExercise paths%b\n\n" "$BOLD$CYAN" "$RESET"
-    echo "levels/guided/00-basics/00-build-and-run"
-    echo "levels/guided/00-basics/01-run-in-gdb"
-    echo "levels/guided/00-basics/02-first-breakpoint"
-    echo "levels/guided/00-basics/03-inspect-locals"
-    echo "levels/guided/00-basics/04-step-into-functions"
-    echo "levels/guided/00-basics/05-basics-capstone"
+    dojo_header "DOCTOR" "Toolchain check"
     echo
-    printf "%bExample%b\n" "$BOLD$CYAN" "$RESET"
-    dojo_cmd "cd levels/guided/00-basics/01-run-in-gdb"
-    dojo_cmd "start"
+
+    rc=0
+    check_tool() {
+        if command -v "$1" >/dev/null 2>&1; then
+            printf '  %bok%b    %-8s %s\n' "$GREEN" "$RESET" "$1" "$("$1" --version 2>&1 | head -1)"
+        else
+            printf '  %bmiss%b  %-8s %s\n' "$RED" "$RESET" "$1" "$2"
+            rc=1
+        fi
+    }
+
+    check_tool gcc  "install build-essential"
+    check_tool make "install make"
+    check_tool gdb  "install gdb, or use the Docker browser terminal"
+
+    if command -v sha256sum >/dev/null 2>&1 || command -v shasum >/dev/null 2>&1 \
+        || command -v openssl >/dev/null 2>&1; then
+        printf '  %bok%b    %-8s %s\n' "$GREEN" "$RESET" "sha256" "answer checking available"
+    else
+        printf '  %bmiss%b  %-8s %s\n' "$RED" "$RESET" "sha256" "need sha256sum, shasum, or openssl"
+        rc=1
+    fi
+
+    echo
+    if [ "$rc" -eq 0 ]; then
+        dojo_success "Everything needed is present."
+    else
+        dojo_warn "Something is missing. See docs/SETUP.md."
+    fi
+    return "$rc"
 }
 
 case "${1:-help}" in
-    help|-h|--help)
-        print_help
-        ;;
-    modes)
-        show_modes
-        ;;
-    guided)
-        show_guided
-        ;;
-    basics)
-        show_basics
-        ;;
-    paths)
-        show_paths
-        ;;
+    help | -h | --help) cmd_help ;;
+    next)               cmd_next ;;
+    list)               cmd_list ;;
+    tracks)             cmd_tracks ;;
+    paths)              cmd_paths ;;
+    show)               shift; cmd_show "$@" ;;
+    doctor)             cmd_doctor ;;
     *)
         dojo_error "Unknown command: $1"
         echo
-        print_help
+        cmd_help
         exit 1
         ;;
 esac

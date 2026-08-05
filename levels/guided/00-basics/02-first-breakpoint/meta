@@ -1,0 +1,11 @@
+TRACK=Guided Path
+LEVEL=Basics
+NUMBER=02
+TITLE=First Breakpoint
+SKILL=Set a breakpoint at main and continue execution.
+GOAL=Stop at main, then continue until the program prints its status.
+SUBMIT=STATUS
+GDB=break main|run|continue|quit
+HINTS=break main|continue
+ANSWER=e5aa41f81278c3d0b35fb040c71a815cd0dbd3b4c24f1097cd4edf7e78d5eeba
+MODE=upper

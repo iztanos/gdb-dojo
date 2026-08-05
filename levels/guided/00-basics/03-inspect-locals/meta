@@ -1,0 +1,11 @@
+TRACK=Guided Path
+LEVEL=Basics
+NUMBER=03
+TITLE=Inspect Local Variables
+SKILL=Inspect variables that the program never prints.
+GOAL=Find the value stored in access_code.
+SUBMIT=ACCESS_CODE
+GDB=break main|run|next|info locals|print access_code
+HINTS=info locals|print access_code
+ANSWER=cd91c5876cd288087223b6e1b844a78dfeb0d2298d56814e3388934274fb9277
+MODE=digits

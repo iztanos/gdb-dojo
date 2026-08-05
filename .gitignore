@@ -8,6 +8,7 @@ levels/**/*
 !levels/**/*.md
 !levels/**/*.gdb
 !levels/**/Makefile
+!levels/**/meta
 !levels/**/check.sh
 !levels/**/start
 
