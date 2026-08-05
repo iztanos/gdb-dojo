@@ -8,6 +8,10 @@
 
 set -euo pipefail
 
+# Where the learner invoked us from, captured before we move to the repo root.
+# `dojo hint` needs it to tell which exercise directory they are standing in.
+invocation_dir="$(pwd)"
+
 repo_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$repo_dir"
 
@@ -17,12 +21,34 @@ cd "$repo_dir"
 . "$repo_dir/lib/dojo-paths.sh"
 # shellcheck source=lib/dojo-progress.sh
 . "$repo_dir/lib/dojo-progress.sh"
+# shellcheck source=lib/dojo-hints.sh
+. "$repo_dir/lib/dojo-hints.sh"
 
 total_count() { dojo_exercises "$repo_dir" | wc -l | tr -d '[:space:]'; }
 done_count()  { dojo_exercises "$repo_dir" | dojo_progress_count "$repo_dir"; }
 
 print_progress_line() {
-    printf '%bProgress%b  %s of %s complete\n' "$BOLD" "$RESET" "$(done_count)" "$(total_count)"
+    _d="$(done_count)"; _t="$(total_count)"
+    _width=24
+    _filled=0
+    [ "$_t" -gt 0 ] && _filled=$(( _d * _width / _t ))
+    printf '%bProgress%b  [%b%s%b%s] %s of %s\n' \
+        "$BOLD" "$RESET" \
+        "$GREEN" "$(printf '%*s' "$_filled" '' | tr ' ' '#')" "$RESET" \
+        "$(printf '%*s' "$((_width - _filled))" '' | tr ' ' '.')" \
+        "$_d" "$_t"
+}
+
+# Resolve the exercise the learner is currently standing in, if any.
+# Returns non-zero when the caller is not inside one.
+current_exercise() {
+    _cwd="$invocation_dir"
+    _rel="${_cwd#"$repo_dir"/}"
+    if [ "$_rel" != "$_cwd" ] && [ -f "$repo_dir/$_rel/meta" ]; then
+        printf '%s' "$_rel"
+        return 0
+    fi
+    return 1
 }
 
 cmd_help() {
@@ -39,6 +65,8 @@ cmd_help() {
         printf 'dojo tracks\ttracks and how far along each one is\n'
         printf 'dojo paths\tbare exercise paths\n'
         printf 'dojo show <name>\tdetails for one exercise\n'
+        printf 'dojo hint\treveal the next hint for the current exercise\n'
+        printf 'dojo cheatsheet\tGDB commands you have unlocked so far\n'
         printf 'dojo doctor\tcheck that the toolchain works\n'
         printf 'dojo help\tthis message\n'
     } | dojo_table
@@ -157,6 +185,72 @@ cmd_show() {
     dojo_cmd "start"
 }
 
+cmd_hint() {
+    # `|| true`: at the repo root current_exercise exits non-zero, and under
+    # `set -e` a failing command substitution in an assignment aborts the
+    # script, which made `dojo hint <name>` print nothing at all.
+    ex="$(current_exercise || true)"
+    if [ -z "$ex" ]; then
+        ex="${1:-}"
+        if [ -z "$ex" ]; then
+            dojo_error "Run this from inside an exercise directory, or name one:"
+            dojo_cmd "dojo hint 03-inspect"
+            return 1
+        fi
+        ex="$(dojo_exercises "$repo_dir" | grep -- "$ex" | head -1)"
+        [ -n "$ex" ] || { dojo_error "No exercise matches that name."; return 1; }
+    fi
+
+    total="$(dojo_hint_total "$ex" "$repo_dir")"
+    if [ "$total" -eq 0 ]; then
+        dojo_warn "This exercise has no hints yet."
+        return 0
+    fi
+
+    dojo_hint_advance "$ex" "$repo_dir" >/dev/null
+
+    dojo_clear
+    dojo_header "HINT" "$(dojo_label "$ex" "$repo_dir")"
+    echo
+    printf 'Goal\n  %s\n\n' "$(dojo_meta "$ex" GOAL "$repo_dir")"
+    dojo_hints_print "$ex" "$repo_dir"
+    dojo_hints_footer "$ex" "$repo_dir"
+}
+
+cmd_cheatsheet() {
+    dojo_clear
+    dojo_header "CHEATSHEET" "Commands you have unlocked"
+    echo
+
+    # Built once into a variable: assigning inside a pipeline would run in a
+    # subshell and the "nothing unlocked" flag would never survive.
+    rows=""
+    while IFS= read -r ex; do
+        [ -n "$ex" ] || continue
+        dojo_progress_done "$ex" "$repo_dir" || continue
+        teaches="$(dojo_meta "$ex" TEACHES "$repo_dir")"
+        [ -n "$teaches" ] || continue
+        label="$(dojo_label "$ex" "$repo_dir")"
+        while IFS= read -r t; do
+            [ -n "$t" ] || continue
+            rows="$rows${t%%:*}	${t#*:}	$label
+"
+        done <<EOF
+$(printf '%s' "$teaches" | tr '|' '\n')
+EOF
+    done < <(dojo_exercises "$repo_dir")
+
+    if [ -n "$rows" ]; then
+        printf 'Command\tWhat it does\tFrom\n%b' "$rows" | dojo_table
+    fi
+
+    if [ -z "$rows" ]; then
+        dojo_dim "Nothing unlocked yet. Finish an exercise and it shows up here."
+    fi
+    echo
+    print_progress_line
+}
+
 cmd_doctor() {
     dojo_clear
     dojo_header "DOCTOR" "Toolchain check"
@@ -200,6 +294,8 @@ case "${1:-help}" in
     tracks)             cmd_tracks ;;
     paths)              cmd_paths ;;
     show)               shift; cmd_show "$@" ;;
+    hint)               shift; cmd_hint "$@" ;;
+    cheatsheet | cheat) cmd_cheatsheet ;;
     doctor)             cmd_doctor ;;
     *)
         dojo_error "Unknown command: $1"

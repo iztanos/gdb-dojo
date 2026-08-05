@@ -37,9 +37,11 @@ For full setup instructions, see [docs/SETUP.md](docs/SETUP.md).
 Inside the browser terminal:
 
 ```bash
-dojo doctor   # confirm gcc, gdb, and make work
-dojo next     # go to the next unfinished exercise
-dojo list     # every exercise and what you have completed
+dojo doctor       # confirm gcc, gdb, and make work
+dojo next         # go to the next unfinished exercise
+dojo list         # every exercise and what you have completed
+dojo hint         # one more nudge on the exercise you are in
+dojo cheatsheet   # the GDB commands you have unlocked so far
 ```
 
 ## Tracks

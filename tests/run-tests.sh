@@ -95,6 +95,26 @@ test_exercise() {
         bad "meta has required keys" "missing: ${meta_missing[*]}"
     fi
 
+    local hint_total
+    hint_total="$(grep -cE '^HINT[0-9]+=.' "$dir/meta" || true)"
+    if [ "${hint_total:-0}" -ge 1 ]; then
+        ok "has progressive hints ($hint_total)"
+    else
+        bad "has progressive hints" "define HINT1..HINTn in $dir/meta"
+    fi
+
+    # HINT numbering must be contiguous from 1, or hints silently stop showing.
+    local gap=0 i=1
+    while [ "$i" -le "${hint_total:-0}" ]; do
+        grep -qE "^HINT$i=." "$dir/meta" || gap=1
+        i=$((i + 1))
+    done
+    if [ "$gap" -eq 0 ]; then
+        ok "hint numbering is contiguous"
+    else
+        bad "hint numbering is contiguous" "HINT1..HINT$hint_total must all exist"
+    fi
+
     for f in check.sh start; do
         if [ -x "$dir/$f" ]; then
             ok "$f is executable"
@@ -172,16 +192,40 @@ test_exercise() {
             ok "check.sh accepts solved answer"
 
             # 7. answer must not appear in plaintext anywhere in the exercise
-            if grep -qiF -- "$answer" "$dir/check.sh"; then
+            if grep -qiwF -- "$answer" "$dir/check.sh"; then
                 bad "answer not leaked in check.sh" "found '$answer' in check.sh"
             else
                 ok "answer not leaked in check.sh"
             fi
-            if grep -qiF -- "$answer" "$dir/README.md"; then
+            if grep -qiwF -- "$answer" "$dir/README.md"; then
                 bad "answer not leaked in README.md" "found '$answer' in README.md"
             else
                 ok "answer not leaked in README.md"
             fi
+            if grep -qiwF -- "$answer" "$dir/meta"; then
+                bad "answer not leaked in meta/hints" "found '$answer' in meta"
+            else
+                ok "answer not leaked in meta/hints"
+            fi
+
+            # A wrong answer must reveal exactly one more hint.
+            rm -rf .dojo
+            (cd "$dir" && ./check.sh __WRONG__ >/dev/null 2>&1) || true
+            local shown
+            shown="$(hint_count_for "$dir")"
+            if [ "${shown:-0}" = "1" ]; then
+                ok "a wrong answer reveals one hint"
+            else
+                bad "a wrong answer reveals one hint" "hint counter was '${shown:-unset}'"
+            fi
+            (cd "$dir" && ./check.sh __WRONG__ >/dev/null 2>&1) || true
+            shown="$(hint_count_for "$dir")"
+            if [ "${shown:-0}" = "2" ]; then
+                ok "hints escalate on repeated wrong answers"
+            else
+                bad "hints escalate on repeated wrong answers" "hint counter was '${shown:-unset}'"
+            fi
+            rm -rf .dojo
         else
             bad "check.sh accepts solved answer" "solution produced '$answer', rejected by check.sh"
         fi
@@ -193,6 +237,12 @@ test_exercise() {
 # ------------------------------------------------------------------ repo -----
 
 dojo_first_exercise() { printf '%s' "${exercises[0]}"; }
+
+# Revealed-hint counter for an exercise, or 0 when nothing is recorded.
+hint_count_for() {
+    [ -f .dojo/hints ] || { printf '0'; return; }
+    awk -F'\t' -v d="$1" '$1 == d { n = $2 } END { print (n == "" ? 0 : n) }' .dojo/hints
+}
 
 test_repo() {
     printf '\n%srepository%s\n' "$C_BOLD" "$C_RESET"
@@ -211,7 +261,7 @@ test_repo() {
     fi
 
     # dojo subcommands must not error
-    for sub in help next list tracks paths doctor; do
+    for sub in help next list tracks paths doctor cheatsheet; do
         if NO_COLOR=1 ./dojo "$sub" >/dev/null 2>&1; then
             ok "dojo $sub exits 0"
         else
@@ -266,6 +316,38 @@ test_repo() {
             bad "dojo show rejects an unknown exercise" "expected non-zero exit"
         else
             ok "dojo show rejects an unknown exercise"
+        fi
+        # cheatsheet only lists commands from completed exercises
+        rm -rf .dojo
+        out="$(NO_COLOR=1 ./dojo cheatsheet 2>/dev/null)"
+        if printf '%s' "$out" | grep -q 'Nothing unlocked yet'; then
+            ok "cheatsheet is empty before any exercise is done"
+        else
+            bad "cheatsheet is empty before any exercise is done"
+        fi
+        mkdir -p .dojo && printf '%s\n' "$first" > .dojo/progress
+        out="$(NO_COLOR=1 ./dojo cheatsheet 2>/dev/null)"
+        if printf '%s' "$out" | grep -q 'Nothing unlocked yet'; then
+            bad "cheatsheet lists commands after completion"
+        else
+            ok "cheatsheet lists commands after completion"
+        fi
+
+        out="$(NO_COLOR=1 ./dojo hint "$(basename "$first")" 2>/dev/null || true)"
+        if printf '%s' "$out" | grep -q 'Hint 1 of'; then
+            ok "dojo hint reveals the first hint"
+        else
+            bad "dojo hint reveals the first hint"
+        fi
+
+        # Regression: the CLI cd's to the repo root, so it must remember where
+        # it was invoked from or `dojo hint` inside an exercise finds nothing.
+        rm -rf .dojo
+        out="$(cd "$first" && NO_COLOR=1 "$repo_dir/dojo" hint 2>/dev/null || true)"
+        if printf '%s' "$out" | grep -q 'Hint 1 of'; then
+            ok "dojo hint works from inside an exercise directory"
+        else
+            bad "dojo hint works from inside an exercise directory" "needs no argument when cwd is an exercise"
         fi
         rm -rf .dojo
     fi

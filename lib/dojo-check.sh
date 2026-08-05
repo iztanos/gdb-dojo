@@ -78,26 +78,46 @@ dojo_check_exercise() {
         _done="$(dojo_exercises "$_root" | dojo_progress_count "$_root")"
         printf 'Progress  %s of %s\n\n' "$_done" "$_total"
 
+        _teaches="$(dojo_meta "$_rel" TEACHES "$_root")"
+        if [ -n "$_teaches" ]; then
+            printf '%bYou can now use%b\n' "$BOLD" "$RESET"
+            printf '%s\n' "$_teaches" | tr '|' '\n' | while IFS= read -r _t; do
+                [ -n "$_t" ] || continue
+                printf '  %-18s %s\n' "${_t%%:*}" "${_t#*:}"
+            done
+            echo
+        fi
+
         _next="$(dojo_progress_next "$_root")"
         if [ -n "$_next" ]; then
             echo "Next"
-            dojo_cmd "cd $_root/$_next && start"
+            dojo_cmd "dojo next"
         else
             dojo_success "Every exercise is complete. Well done."
+            echo
+            dojo_cmd "dojo cheatsheet"
         fi
         return 0
     fi
 
     dojo_header "NOT QUITE" "$(dojo_meta "$_rel" TITLE "$_root")"
     echo
-    _hints="$(dojo_meta "$_rel" HINTS "$_root")"
-    if [ -n "$_hints" ]; then
-        dojo_error "Try:"
-        printf '%s' "$_hints" | tr '|' '\n' | while IFS= read -r _h; do
-            [ -n "$_h" ] && dojo_cmd "$_h"
-        done
+
+    # Submitting the literal placeholder from the briefing is a distinct
+    # mistake from guessing wrong, and deserves a distinct message.
+    _placeholder="$(dojo_meta "$_rel" SUBMIT "$_root")"
+    if [ -n "$_placeholder" ] && [ "$_normalized" = "$(dojo_normalize "$_placeholder" "$_mode")" ]; then
+        dojo_warn "That is the placeholder from the briefing, not a value."
+        printf '  Replace %s with what you found in GDB.\n\n' "$_placeholder"
     else
-        dojo_error "That is not the expected value."
+        dojo_error "Not the expected value."
+        echo
     fi
+
+    # Each wrong answer reveals one more hint, so help arrives gradually
+    # instead of the same block repeating forever.
+    dojo_hint_advance "$_rel" "$_root" >/dev/null
+    dojo_hints_print "$_rel" "$_root"
+    dojo_hints_footer "$_rel" "$_root"
     return 1
 }
