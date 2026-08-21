@@ -1,0 +1,15 @@
+TRACK=Guided Path
+LEVEL=Memory
+NUMBER=01
+TITLE=Array Walk
+SKILL=Index into an array at a position you found in the debugger, not in the source.
+GOAL=Report scores[target_index].
+SUBMIT=SCORE
+GDB=break main|run|next|next|next|print target_index|print scores[target_index]
+ANSWER=8c1f1046219ddd216a023f792356ddf127fce372a72ec9b4cdac989ee5b0b455
+MODE=digits
+BRIEFING=goal
+TEACHES=print ARR[i]:index into an array element|print EXPR1[EXPR2]:index using another variable's value
+HINT1=You need two things: which index matters, and what is stored there. Neither is printed.
+HINT2=`break main`, `run`, then `next` three times gets both `scores` and `target_index` initialized before you print anything.
+HINT3=`print target_index` gives you the index. `print scores[target_index]` indexes with it directly — you do not need to hardcode a number.

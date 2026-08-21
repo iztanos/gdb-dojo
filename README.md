@@ -123,7 +123,7 @@ Done  Level        Exercise                  Path
 [ ]   Breakpoints  01  Conditional Break     levels/guided/01-breakpoints/01-conditional-breakpoint
 [ ]   Breakpoints  03  Watchpoints           levels/guided/01-breakpoints/03-watchpoints
 
-Progress  [######..................] 3 of 11
+Progress  [####....................] 3 of 16
 ```
 
 **You build your own reference.** `dojo cheatsheet` lists only what you earned:
@@ -196,7 +196,19 @@ is not viable.
 | 03 | `watchpoints` | `watch` — stop on data, not on code |
 | 04 | `breakpoints-capstone` | conditions plus `finish` |
 
-Next up: **02 – Memory** — pointers, arrays, and examining raw memory.
+### 02 – Memory
+
+Real bugs often live one step removed from a named variable — behind a
+pointer, inside an array at a position you have to work out, in raw bytes
+`print` won't decode, or several hops down a chain of pointers.
+
+| # | Exercise | Skill |
+|:--|:--|:--|
+| 00 | `pointer-dereference` | `print *ptr`, `print &var` |
+| 01 | `array-walk` | `print arr[i]` — indexing with a value found at runtime |
+| 02 | `examine-memory` | `x` — reading raw bytes `print` does not decode |
+| 03 | `struct-inspect` | `ptype`, `print ptr->field` |
+| 04 | `memory-capstone` | chase a pointer chain, combining all of it |
 
 <a id="contributing"></a>
 

@@ -37,3 +37,10 @@ sol_quoted_string() {
 sol_watch_new() {
     sed -nE 's/^New value = (.*)$/\1/p' | head -1
 }
+
+# Values from a GDB `x` examine-memory line, e.g.
+#   0x7fffffffd754: 0x1a  0x2b  0x03  0xe7   ->  0x1a 0x2b 0x03 0xe7
+# Strips the leading "ADDR:" so callers can pick a field with `awk '{print $N}'`.
+sol_x_values() {
+    sed -nE 's/^0x[0-9a-fA-F]+:\s*//p' | head -1
+}

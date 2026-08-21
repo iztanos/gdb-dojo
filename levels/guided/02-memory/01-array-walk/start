@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Thin stub: the briefing is rendered from this exercise's `meta` file.
+set -e
+d="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+r="$d"; while [ ! -f "$r/dojo" ] && [ "$r" != "/" ]; do r="$(dirname "$r")"; done
+exec bash "$r/lib/dojo-start.sh" "$d"

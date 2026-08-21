@@ -8,6 +8,6 @@ earlier.
 |-------|-------|--------|
 | [00 - Basics](00-basics) | Build, run, inspect variables, step through functions | Complete |
 | [01 - Breakpoints](01-breakpoints) | Line and conditional breakpoints, ignore counts, watchpoints | Complete |
-| 02 - Memory | Pointers, arrays, and examining raw memory | Planned |
+| [02 - Memory](02-memory) | Pointers, arrays, and examining raw memory | Complete |
 
 Use `dojo list` for the live view, including which exercises you have finished.
