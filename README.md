@@ -1,5 +1,7 @@
 <div align="center">
 
+# GDB Dojo
+
 ```
  ██████╗ ██████╗ ██████╗     ██████╗  ██████╗      ██╗ ██████╗ 
 ██╔════╝ ██╔══██╗██╔══██╗    ██╔══██╗██╔═══██╗     ██║██╔═══██╗
@@ -8,7 +10,7 @@
 ╚██████╔╝██████╔╝██████╔╝    ██████╔╝╚██████╔╝╚█████╔╝╚██████╔╝
  ╚═════╝ ╚═════╝ ╚═════╝     ╚═════╝  ╚═════╝  ╚════╝  ╚═════╝ 
 
-              break → run → inspect → understand
+             break -> run -> inspect -> understand
 ```
 
 **Learn GDB by debugging real programs. Not by reading about it.**
