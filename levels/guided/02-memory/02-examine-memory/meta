@@ -1,0 +1,15 @@
+TRACK=Guided Path
+LEVEL=Memory
+NUMBER=02
+TITLE=Examine Memory
+SKILL=Read raw memory with the x command when print does not decode it usefully.
+GOAL=Report the third byte, code[2], in hex, exactly as GDB shows it.
+SUBMIT=0xNN
+GDB=break main|run|next|next|x/4xb code
+ANSWER=114400ec7d3c250be3da417fe92ad7f26399c81edf09897265095105f4c275c2
+MODE=upper
+BRIEFING=goal
+TEACHES=x/NFU ADDR:examine N units of memory at ADDR, formatted F, sized U|x/xb EXPR:read individual raw bytes in hex
+HINT1=`print code` technically shows something, but an unsigned char array prints as an escaped string — awkward to convert back to hex by hand. There is a command built for reading raw bytes directly.
+HINT2=`x/4xb code` examines 4 units, in hex, one byte each, starting at the address `code` decays to.
+HINT3=The command prints an address, then the bytes at and after it, in order. The third one printed is code[2].

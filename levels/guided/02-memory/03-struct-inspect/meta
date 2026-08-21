@@ -1,0 +1,15 @@
+TRACK=Guided Path
+LEVEL=Memory
+NUMBER=03
+TITLE=Struct Inspect
+SKILL=Read a field of a struct that is only reachable through a pointer.
+GOAL=Report the balance field.
+SUBMIT=BALANCE
+GDB=break main|run|next|next|next|print entry_ptr->balance
+ANSWER=3d3f6ca967cfcb89fb92cf4538368d3a24186ce44fefb8934d3b4f430fa6902f
+MODE=digits
+BRIEFING=goal
+TEACHES=print PTR->FIELD:read a struct field through a pointer|ptype PTR:show the type a pointer points to
+HINT1=`entry_ptr` is a pointer to a struct, not the struct itself. `print entry_ptr` just shows an address.
+HINT2=`ptype entry_ptr` shows the struct's field names if you have forgotten them. `print *entry_ptr` shows every field at once.
+HINT3=`entry_ptr->balance` reads one field directly through the pointer, without a separate dereference step.

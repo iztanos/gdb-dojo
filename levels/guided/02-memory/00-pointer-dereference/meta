@@ -1,0 +1,15 @@
+TRACK=Guided Path
+LEVEL=Memory
+NUMBER=00
+TITLE=Pointer Dereference
+SKILL=Read the value a pointer points to, not the pointer itself.
+GOAL=Report the value level_ptr points to.
+SUBMIT=SECRET_LEVEL
+GDB=break main|run|next|next|next|print *level_ptr
+ANSWER=abe0ccdc1f6402ee65627d5f95700af1e5914d113f02db83567212fa036f54d2
+MODE=digits
+BRIEFING=goal
+TEACHES=print *PTR:dereference a pointer|print &VAR:show a variable's address
+HINT1=`print level_ptr` shows an address, not the value you want.|You need one more step: follow the pointer to what it points at.
+HINT2=`break main` then `run` stops before either local is assigned. Step past both with `next` before printing anything.
+HINT3=`print *level_ptr` dereferences the pointer, showing the int it points to rather than its address.

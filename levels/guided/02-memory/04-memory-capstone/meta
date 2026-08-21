@@ -1,0 +1,15 @@
+TRACK=Guided Path
+LEVEL=Memory
+NUMBER=04
+TITLE=Memory Capstone
+SKILL=Chase a pointer chain to its end, combining dereference, indexing, and struct access.
+GOAL=Report the value in the LAST node.
+SUBMIT=LAST_VALUE
+GDB=break main|run|next|next|next|next|next|print *head|print *head->next|print *head->next->next
+ANSWER=1da51b8d8ff98f6a48f80ae79fe3ca6c26e1abb7b7d125259255d6d2b875ea08
+MODE=digits
+BRIEFING=goal
+TEACHES=print *PTR:dereference and show every field at once|print PTR->next->FIELD:chase a pointer chain
+HINT1=Nothing tells you how many nodes there are. Follow `next` from `head` one node at a time and watch for where the chain ends.
+HINT2=`print *head` shows the first node's fields, including its own `next` pointer. `print *head->next` shows the one after it.
+HINT3=A node's `next` field of `0x0` means there is nothing after it — that node is the last one. Read its `value`.
