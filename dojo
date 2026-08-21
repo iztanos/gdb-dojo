@@ -109,13 +109,19 @@ cmd_list() {
     dojo_header "EXERCISES"
     echo
     {
-        printf 'Done\tExercise\tSkill\tPath\n'
+        # Exercise numbers restart per level, so the level has to be shown
+        # or "04" appears twice with different meanings.
+        # Exercise numbers restart per level, so the level has to be shown or
+        # "04" appears twice meaning different things. The path stays because
+        # this is the listing people copy a `cd` out of; the skill text is one
+        # `dojo show` away and would push the table past a usable width.
+        printf 'Done\tLevel\tExercise\tPath\n'
         while IFS= read -r ex; do
             [ -n "$ex" ] || continue
             printf '%s\t%s\t%s\t%s\n' \
                 "$(dojo_progress_mark_for "$ex" "$repo_dir")" \
+                "$(dojo_meta "$ex" LEVEL "$repo_dir")" \
                 "$(dojo_label "$ex" "$repo_dir")" \
-                "$(dojo_meta "$ex" SKILL "$repo_dir")" \
                 "$ex"
         done < <(dojo_exercises "$repo_dir")
     } | dojo_table
@@ -141,7 +147,7 @@ cmd_next() {
         return 0
     fi
 
-    dojo_header "NEXT EXERCISE" "$(dojo_label "$next" "$repo_dir")"
+    dojo_header "NEXT EXERCISE" "$(dojo_meta "$next" LEVEL "$repo_dir") / $(dojo_label "$next" "$repo_dir")"
     echo
     printf 'Skill\n  %s\n\n' "$(dojo_meta "$next" SKILL "$repo_dir")"
     echo "Go there"

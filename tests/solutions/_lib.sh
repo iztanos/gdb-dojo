@@ -32,3 +32,8 @@ sol_print_value() {
 sol_quoted_string() {
     sol_print_value | sed -nE 's/[^"]*"([^"]*)".*/\1/p' | head -1
 }
+
+# First "New value = X" line from a watchpoint stop.
+sol_watch_new() {
+    sed -nE 's/^New value = (.*)$/\1/p' | head -1
+}

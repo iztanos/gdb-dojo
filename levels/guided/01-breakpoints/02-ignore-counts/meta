@@ -1,0 +1,15 @@
+TRACK=Guided Path
+LEVEL=Breakpoints
+NUMBER=02
+TITLE=Ignore Counts
+SKILL=Skip a fixed number of breakpoint hits.
+GOAL=Report the reading returned by the 250th call to sensor_reading().
+SUBMIT=READING
+GDB=break sensor_reading|ignore 1 249|run|finish|next|print reading
+ANSWER=b027feeb60b70f0d34ece10aead660113cf06408da4c6477c7b2606839475de4
+MODE=digits
+BRIEFING=goal
+TEACHES=ignore N COUNT:skip the next COUNT hits of breakpoint N|finish:run until the current function returns
+HINT1=A condition works when you can express *which* call you want.|Here you want the Nth call, so counting hits is the natural fit.
+HINT2=`break sensor_reading` then `ignore 1 249` skips the first 249 hits, so the next stop is call 250.
+HINT3=`finish` returns you to main. The assignment has not retired yet, so `next` once, then `print reading`.
